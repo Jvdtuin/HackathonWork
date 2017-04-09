@@ -43,8 +43,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
+    <Compile Include="Bomb.cs" />
+    <Compile Include="BombAction.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityType.cs" />
+    <Compile Include="Factory.cs" />
+    <Compile Include="IncAction.cs" />
+    <Compile Include="InvalidInputException.cs" />
+    <Compile Include="LostException.cs" />
+    <Compile Include="MoveAction.cs" />
+    <Compile Include="MovingEntity.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Referee.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="StringActionExtentions.cs" />
+    <Compile Include="Troop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
