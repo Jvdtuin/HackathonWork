@@ -14,6 +14,7 @@ namespace HackathonWork
         private List<Troop> _newTroops;
         private List<Bomb> _bombs;
         private List<Bomb> _newBombs;
+        private List<Frame> _frames;
 
         private Random _random;
 
@@ -39,7 +40,12 @@ namespace HackathonWork
 
             _troops = new List<Troop>();
             _bombs = new List<Bomb>();
+            _frames = new List<Frame>();
+        }
 
+        public List<Frame> GetFrames()
+        {
+            return _frames;
         }
        
 		/// <summary>
@@ -407,8 +413,6 @@ namespace HackathonWork
 						}
 					}
 				}
-
-
 			}
 
             // solve bombs
@@ -462,10 +466,63 @@ namespace HackathonWork
 					}
 				}
 			}
+            
+
 			if (gameOver)
 			{
 				throw new GameOverException("EndReached");
 			}
+        }
+
+        protected override void AddFrame()
+        {
+            Frame frame = new Frame();
+            foreach(Factory factory in _factories)
+            {
+                frame.Factories.Add (new Frame.FactoryInfo()
+                {
+                    Id = factory.Id,
+                    CurrentProduction = factory.GetCurrentProductionRate(),
+                    OwnerId = factory.Owner.Id,
+                    UnitCount = factory.UnitCount,
+                });                
+            }
+            foreach(Troop troop in _troops)
+            {
+                frame.Troops.Add(new Frame.TroopInfo()
+                {
+                    Id = troop.Id,
+                    OwnerId = troop.Owner.Id,
+                    SourceId = troop.Source.Id,
+                    DestinationId = troop.Destination.Id,
+                    RemaingTurns = troop.RemainingTurns,
+                    UnitCount = troop.UnitCount,
+                });
+            }
+            foreach(Bomb bomb in _bombs)
+            {
+                frame.Bombs.Add(new Frame.BombInfo()
+                {
+                    Id = bomb.Id,
+                    OwnerId = bomb.Owner.Id,
+                    SourceId = bomb.Source.Id,
+                    DestinationId = bomb.Destination.Id,
+                    RemainingTurns = bomb.RemainingTurns,
+                });
+            }
+            foreach(Player player in _players)
+            {
+                foreach (IncAction action in player.LastIncActions)
+                {
+                    frame.Incs.Add(action.Source.Id);
+                }
+                frame.Players.Add(new Frame.PlayerInfo()
+                {
+                    RemainingBombs = player.RemainingBombs,
+                    Score = player.Score,
+                });
+            }
+            _frames.Add(frame);
         }
 
 		private void AddToolTip(int id, string v)

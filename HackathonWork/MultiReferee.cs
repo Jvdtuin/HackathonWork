@@ -67,7 +67,9 @@ namespace HackathonWork
 
 		protected abstract void UpdateGame(int round);
 
-		public void PlayGame()
+        protected abstract void AddFrame();
+
+        public void PlayGame()
 		{
 			_playerCount = _consoles.Length;
 			// initialize the player consoles
@@ -75,6 +77,7 @@ namespace HackathonWork
 			for (int i = 0; i < _playerCount; i++)
 			{
 				Process p = CreatePlayerProcess(_consoles[i]);
+                _processes[i] = p;
 				p.Start();
 			}
 			// create the player structure
@@ -118,6 +121,7 @@ namespace HackathonWork
 
 
 					turnCounter++;
+                    AddFrame();
 				}
 			}
 			catch (Exception ex)
