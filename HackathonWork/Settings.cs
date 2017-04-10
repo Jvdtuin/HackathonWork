@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HackathonWork
 {
@@ -23,10 +24,31 @@ namespace HackathonWork
         internal const int ExtraSpaceBetweenFactories = 300;
         internal const int ConstIncreaseProduction = 10;
 
-        internal static T GetProperty<T>(string v)
+        internal static T GetProperty<T>(string key)
         {
-            throw new NotImplementedException();
+            if (Properties.ContainsKey(key))
+			{
+				return (T)Properties[key];
+			}
+			return default(T);
         }
+
+		internal static void SetProperty<T>(string key, T value)
+		{
+			lock (Properties)
+			{
+				if (Properties.ContainsKey(key))
+				{
+					Properties[key] = value;
+				}
+				else
+				{
+					Properties.Add(key, value);
+				}
+			}
+		}
+
+		internal static Dictionary<string, object> Properties = new Dictionary<string, object>();
 
         internal const int DamageDuration = 5;
 

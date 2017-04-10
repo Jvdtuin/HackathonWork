@@ -53,6 +53,7 @@
     <Compile Include="Entity.cs" />
     <Compile Include="EntityType.cs" />
     <Compile Include="Factory.cs" />
+    <Compile Include="Frame.cs" />
     <Compile Include="GameOverException.cs" />
     <Compile Include="IncAction.cs" />
     <Compile Include="InvalidInputException.cs" />
