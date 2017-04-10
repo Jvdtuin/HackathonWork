@@ -14,7 +14,7 @@ namespace HackathonWork
         private List<IncAction> _lastIncActions;
 
         private string _message;
-        private int _score;
+        public int Score { get; set; }
         private Factory[] _factories;
 
         private List<Troop> _troops;
@@ -22,7 +22,7 @@ namespace HackathonWork
         public Player(int id)
         {
             _id = id;
-            _score = 0;
+            Score = 0;
             RemainingBombs = Settings.BombsPerPlayer;
             _lastMoveActions = new List<MoveAction>();
             _lastBombActions = new List<BombAction>();
@@ -59,7 +59,7 @@ namespace HackathonWork
                     _troops.Remove(troop);
                 }
             }
-            _score = 0;
+            Score = 0;
         }
 
         internal void SetTroops(List<Troop> troops)

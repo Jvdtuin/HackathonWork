@@ -12,7 +12,7 @@ namespace HackathonWork
         {
             if (_owner.Id == playerIdx  )
             {
-                return ToPlayerString(1, _source.Id, _destination.Id, _remainingTurns, 0);
+                return ToPlayerString(1, _source.Id, _destination.Id, RemainingTurns, 0);
             }
             else
             {
@@ -22,7 +22,7 @@ namespace HackathonWork
 
         public string ToViewString()
         {
-            return $"{_id} {(_owner == null ? 0 : _owner.Id)} {_source.Id} {_destination.Id} {_remainingTurns}";
+            return $"{_id} {(_owner == null ? 0 : _owner.Id)} {_source.Id} {_destination.Id} {RemainingTurns}";
         }
 
         public void Explode()

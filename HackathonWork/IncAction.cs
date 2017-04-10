@@ -2,11 +2,11 @@
 {
     internal class IncAction : Action
     {
-        private Factory _source;
+        public Factory Source { get; private set; }
 
         public IncAction(Factory source)
         {
-            _source = source;
+            Source = source;
         }
     }
 }
