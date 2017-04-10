@@ -20,8 +20,11 @@ namespace HackathonWork
         public int Disabled { get;  set; }
         public Dictionary<int, int> Distances { get; private set; }
 
+		public int[] UnitsReadyToFight { get; private set; } = new int[2];
 
-        public void ComputeDistances(Factory[] factories)
+
+
+		public void ComputeDistances(Factory[] factories)
         {
             Distances = new Dictionary<int, int>();
             foreach(Factory factory in factories)

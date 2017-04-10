@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HackathonWork
 {
-    public class Referee
+    public class Referee : MultiReferee
     {
         private Player[] _players;
         private Factory[] _factories;
@@ -17,11 +17,15 @@ namespace HackathonWork
 
         private Random _random;
 
-        public int Seed { get; set; }
+		public Referee(string[] players) : base(players)
+		{
+		}
+
+		public int Seed { get; set; }
         public int CustomFactoryCount { get; set; }
         public int CustomInitialUnitCount { get; set; }
 
-        protected void InitReferee(int playerCount)
+        protected override void InitReferee(int playerCount)
         {
             Seed = Settings.GetProperty<int>("seed");
             int factoryCount = Settings.GetProperty<int>("factoryCount");
@@ -37,7 +41,8 @@ namespace HackathonWork
             _bombs = new List<Bomb>();
 
         }
-        /// <summary>
+       
+		/// <summary>
         /// Generate the factory objects 
         /// </summary>
         /// <param name="factoryCount"></param>
@@ -131,7 +136,7 @@ namespace HackathonWork
 
      //   protected Properties GetConfiguration() => 450
 
-        protected string[] GetInitInputForPlayer(int playerIdx)
+        protected override string[] GetInitInputForPlayer(int playerIdx)
         {
             List<string> data = new List<string>();
             data.Add(_factories.Length.ToString()); // print number of factories
@@ -149,7 +154,7 @@ namespace HackathonWork
             return data.ToArray();
         }
 
-        protected string[] GetInitInputForPlayer(int round, int playerIdx)
+        protected override string[] GetInitInputForPlayer(int round, int playerIdx)
         {
             List<string> data = new List<string>();
             List<string> entities = new List<string>();
@@ -172,7 +177,7 @@ namespace HackathonWork
             return data.ToArray();
         }
 
-        protected void HandlePlayerOutput(int frame, int round, int playerIdx, string[] outputs)
+        protected override void HandlePlayerOutput(int frame, int round, int playerIdx, string[] outputs)
         {
             Player player = _players[playerIdx];
             player.LastBombActions.Clear();
@@ -276,7 +281,7 @@ namespace HackathonWork
             }
         }
 
-        protected void UpdateGame(int round)
+        protected override void UpdateGame(int round)
         {
             _newTroops.Clear();
             _newBombs.Clear();
@@ -312,8 +317,7 @@ namespace HackathonWork
                         _newBombs.Add(bomb);
                         _bombs.Add(bomb);
                         player.RemainingBombs--;
-
-
+						AddToolTip(player.Id, $"BombAction {player.Id} {bombAction.Source.Id} {bombAction.Destination.Id}");
                     }
                 }
                 
@@ -324,26 +328,149 @@ namespace HackathonWork
                     Troop troop = new Troop(moveAction.Source, moveAction.Destination, unitsToMove);
                     if (unitsToMove >0 && troop.FindWithSameRouteInList(_newBombs) == null )
                     {
-
+						moveAction.Source.UnitCount -= unitsToMove;
+						Troop other = troop.FindWithSameRouteInList(_newTroops);
+						if (other !=null)
+						{
+							other.UnitCount += unitsToMove;  
+						}
+						else
+						{
+							_troops.Add(troop);
+							_newTroops.Add(troop);
+						}
                     }
                 }
 
                 // increase production
+				foreach (IncAction incAction in player.LastIncActions)
+				{
+					if (incAction.Source.UnitCount >= Settings.ConstIncreaseProduction && incAction.Source.ProductionRate < Settings.MaxProductionRate )
+					{
+						incAction.Source.ProductionRate++;
+						incAction.Source.UnitCount -= Settings.ConstIncreaseProduction;
+						AddToolTip(player.Id, $"IncAction {player.Id} {incAction.Source.Id}");
+					}
+				}
             }
 
             // create new units
-
+			foreach (Factory factory in _factories)
+			{
+				if (factory.Owner != null)
+				{
+					factory.UnitCount += factory.GetCurrentProductionRate();
+				}
+			}
 
             // solve battels
+			foreach (Factory factory in _factories)
+			{
+				factory.UnitsReadyToFight[0] = 0;
+				factory.UnitsReadyToFight[1] = 0;
+			}
+			for (int i= _troops.Count -1; i>=0; i-- )
+			{
+				Troop troop = _troops[i];
+				if (troop.RemainingTurns <= 0)
+				{
+					troop.Destination.UnitsReadyToFight[troop.Owner.Id] += troop.UnitCount;
+					_troops.Remove(troop);
+				}
+
+			}
+			foreach(Factory factory in _factories)
+			{
+				// units form both players fight first
+				int units = Math.Min(factory.UnitsReadyToFight[0], factory.UnitsReadyToFight[1]);
+				factory.UnitsReadyToFight[0] -= units;
+				factory.UnitsReadyToFight[1] -= units;
+				// Remaining units fight on the factory
+				foreach(Player player in _players)
+				{
+					if (factory.Owner == player)
+					{
+						// allied
+						factory.UnitCount += factory.UnitsReadyToFight[player.Id];
+					}
+					else
+					{
+						// opponent
+						if (factory.UnitsReadyToFight[player.Id] > factory.UnitCount)
+						{
+							factory.Owner = player;
+							factory.UnitCount = factory.UnitsReadyToFight[player.Id] - factory.UnitCount;
+						}
+						else
+						{
+							factory.UnitCount -= factory.UnitsReadyToFight[player.Id];
+						}
+					}
+				}
+
+
+			}
 
             // solve bombs
+			for (int i=_bombs.Count-1; i>=0;i--)
+			{
+				Bomb bomb = _bombs[i];
+				if (bomb.RemainingTurns <=0 )
+				{
+					bomb.Explode();
+					_bombs.Remove(bomb);
+				}
+			}
 
             // update score
+			foreach (Player player in _players)
+			{
+				player.Score = 0;
+			}
+			foreach(Factory factory in _factories)
+			{
+				if (factory.Owner != null)
+				{
+					factory.Owner.Score += factory.UnitCount;
+				}
+			}
+			foreach(Troop troop in _troops)
+			{
+				if (troop.Owner != null)
+				{
+					troop.Owner.Score += troop.UnitCount;
+				}
+			}
 
-
-            // check end conditions
-
-
+			// check end conditions
+			bool gameOver = false;
+			foreach(Player player in _players)
+			{
+				if (player.Score == 0)
+				{
+					int production = 0;
+					foreach (Factory factory in _factories)
+					{
+						if (factory.Owner == player)
+						{
+							production += factory.ProductionRate;
+						}
+					}
+					if (production == 0)
+					{
+						gameOver = true;
+					}
+				}
+			}
+			if (gameOver)
+			{
+				throw new GameOverException("EndReached");
+			}
         }
-    }
+
+		private void AddToolTip(int id, string v)
+		{
+			
+		}
+	}
 }

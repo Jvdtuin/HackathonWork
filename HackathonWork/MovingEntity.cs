@@ -9,16 +9,16 @@ namespace HackathonWork
     internal abstract class MovingEntity : Entity
     {
         protected Player _owner;
-        protected int _remainingTurns;
+        public int RemainingTurns { get; protected set; }
         protected Factory _source;
         protected Factory _destination;
-
+		 
         public MovingEntity(EntityType type, Factory source, Factory destination) : base(type)
         {
             _owner = source.Owner;
             _source = source;
             _destination = destination;
-            _remainingTurns = source.GetDistanceTo(destination);
+            RemainingTurns = source.GetDistanceTo(destination);
         }
 
         public Factory Source { get { return _source; } }
@@ -27,7 +27,7 @@ namespace HackathonWork
 
         public void Move()
         {
-            this._remainingTurns--;
+            this.RemainingTurns--;
         }
 
         public Player Owner { get { return _owner; } }

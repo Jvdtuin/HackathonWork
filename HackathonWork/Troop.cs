@@ -4,11 +4,11 @@ namespace HackathonWork
 {
     internal class Troop : MovingEntity
     {
-        private int _unitCount;
+        public int UnitCount { get; set; } 
 
         public Troop( Factory source, Factory destination, int unitCount) : base(EntityType.TROOP, source, destination)
         {
-            _unitCount = unitCount;
+            UnitCount = unitCount;
         }
 
     
@@ -19,12 +19,12 @@ namespace HackathonWork
             {
                 ownerShip = (playerIdx == _owner.Id) ? 1 : -1;
             }
-            return ToPlayerString(ownerShip, _source.Id, _destination.Id, _unitCount, _remainingTurns);
+            return ToPlayerString(ownerShip, _source.Id, _destination.Id, UnitCount, RemainingTurns);
         }
 
         public string ToViewString()
         {
-            return $"{_id} {(_owner == null ? 0 : _owner.Id)} {_source.Id} {_destination.Id} {_unitCount} {_remainingTurns}";
+            return $"{_id} {(_owner == null ? 0 : _owner.Id)} {_source.Id} {_destination.Id} {UnitCount} {RemainingTurns}";
         }
     }
 }
