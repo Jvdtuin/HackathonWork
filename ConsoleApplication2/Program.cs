@@ -16,7 +16,7 @@ namespace ConsoleApplication2
 		
             string applicationName = "ConsoleApplication1";
             string filePath = $".\\{applicationName}.exe";
-            Process process = CreatePlayerProcess(filePath);
+          
 			//Settings.Seed = 0;
 			//Settings.FactoryCount = 5;
 			//Settings.InitalUnitcount = 30;

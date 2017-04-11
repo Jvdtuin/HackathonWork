@@ -20,6 +20,7 @@ namespace HackathonWork
 
 		public Referee(string[] players) : base(players)
 		{
+			Entity.Reset();
 		}
 
 		public int Seed { get; set; }
@@ -484,12 +485,15 @@ namespace HackathonWork
             Frame frame = new Frame();
             foreach(Factory factory in _factories)
             {
-                frame.Factories.Add (new Frame.FactoryInfo()
-                {
-                    Id = factory.Id,
-                    CurrentProduction = factory.GetCurrentProductionRate(),
-                    OwnerId = (factory.Owner!=null)?factory.Owner.Id:(int?)null,
-                    UnitCount = factory.UnitCount,
+				frame.Factories.Add(new Frame.FactoryInfo()
+				{
+					Id = factory.Id,
+					CurrentProduction = factory.GetCurrentProductionRate(),
+					OwnerId = (factory.Owner != null) ? factory.Owner.Id : (int?)null,
+					UnitCount = factory.UnitCount,
+					X = factory.Position.X,
+					Y = factory.Position.Y,
+					
                 });                
             }
             foreach(Troop troop in _troops)
@@ -501,6 +505,7 @@ namespace HackathonWork
                     SourceId = troop.Source.Id,
                     DestinationId = troop.Destination.Id,
                     RemaingTurns = troop.RemainingTurns,
+					TotalTurns = troop.Source.Distances[troop.Destination.Id],
                     UnitCount = troop.UnitCount,
                 });
             }
@@ -513,7 +518,8 @@ namespace HackathonWork
                     SourceId = bomb.Source.Id,
                     DestinationId = bomb.Destination.Id,
                     RemainingTurns = bomb.RemainingTurns,
-                });
+					TotalTurns = bomb.Source.Distances[bomb.Destination.Id],
+				});
             }
             foreach(Player player in _players)
             {

@@ -27,7 +27,7 @@ public class Player
 		{
 			TurnInitialize();
 
-			List<Move> moves = DetermenMoves();
+			var moves = DetermenMoves();
 
 			TurnOutput(moves);
 		}
@@ -48,7 +48,6 @@ public class Player
 			int factory2 = int.Parse(inputs[1]);
 			int distance = int.Parse(inputs[2]);
 			links[i] = new Link(factory1, factory2, distance);
-			//         Console.Error.WriteLine(links[i]);
 		}
 
 		// build the factorie's 
@@ -58,72 +57,7 @@ public class Player
 		{
 			Factories.Add(i, new Factory(i, links));
 		}
-		for (int i = 0; i < factoryCount; i++)
-		{
-			//    Console.Error.WriteLine($"Factory {i}");
-			foreach (FactoryLink fl in Factories[i].Links)
-			{
-				//    Console.Error.WriteLine($"Link to {fl.Target.Id} dist {fl.Distance}");
 
-				List<int> steps = new List<int>();
-				steps.Add(i);
-				List<Route> routes = new List<Route>();
-				int distance = fl.Distance;
-				SearchShorterRoutes(routes, steps, fl.Target.Id, 0, ref distance);
-				fl.AlternativeRoutes = new List<Route>();
-				if (routes.Count > 0)
-				{
-					routes.Sort((r1, r2) =>
-					{
-						if (r1.Distance > r2.Distance)
-						{ return 1; }
-						if (r1.Distance < r2.Distance)
-						{ return -1; }
-						if (r1.Steps.Count < r2.Steps.Count)
-						{ return 1; }
-						if (r1.Steps.Count > r2.Steps.Count)
-						{ return -1; }
-						return 0;
-					});
-					Route route = routes.First();
-					fl.AlternativeRoutes.Add(route);
-					//   routes = routes.Where(r=>r.Steps[0] != route.Steps[0]).ToList();
-				}
-			}
-		}
-
-	}
-
-	static void SearchShorterRoutes(List<Route> routes, List<int> steps, int endId, int routedistance, ref int directDistance)
-	{
-		int f = steps.Last();
-		foreach (FactoryLink fl in Factories[f].Links.Where(l => !steps.Contains(l.Target.Id)))
-		{
-			if (fl.Distance + routedistance < directDistance)
-			{
-				if (fl.Target.Id == endId)
-				{
-					// create alternative route
-
-					Route r = new Route();
-					r.Distance = fl.Distance + routedistance;
-					r.Steps = new List<int>();
-					foreach (int s in steps)
-					{
-						r.Steps.Add(s);
-					}
-					r.Steps.RemoveAt(0);
-					routes.Add(r);
-					directDistance = r.Distance;
-				}
-				else
-				{
-					steps.Add(fl.Target.Id);
-					SearchShorterRoutes(routes, steps, endId, fl.Distance + routedistance, ref directDistance);
-					steps.Remove(fl.Target.Id);
-				}
-			}
-		}
 	}
 
 	static void TurnInitialize()
@@ -180,12 +114,6 @@ public class Player
 
 		foreach (Factory f in myFactories)
 		{
-			Console.Error.Write($"({f.Id})");
-			for (int i = 0; i < 20; i++)
-			{
-				Console.Error.Write($" {f.CyborgPredictionCount[i]}");
-			}
-			Console.Error.WriteLine();
 			int surplus = f.SurplusCyborgs;
 			f.Links.Sort((l1, l2) =>
 			{
@@ -196,17 +124,6 @@ public class Player
 
 				return 0;
 			});
-			List<Move> factoryMoves = new List<Move>();
-			if ((f.Production < 3) && (surplus > 10))
-			{
-				FactoryLink fl = f.Links.First();
-				if (fl.Target.Owner == 1)
-				{
-					moves.Add(new Move() { SourceId = f.Id, Inc = true, });
-					surplus -= 10;
-				}
-			}
-
 			foreach (FactoryLink fl in f.Links)
 			{
 				bool sendBomb = false;
@@ -223,43 +140,12 @@ public class Player
 
 				if (!sendBomb)
 				{
-					if (surplus > 0)
+					if ((surplus > 0) && (fl.Target.Owner != 1))
 					{
-						if (fl.Target.Owner != 1)
-						{
-							int neededTroops = fl.Target.CyborgCount + fl.Distance * fl.Target.Production;
-							int troops = (neededTroops < surplus) ? neededTroops + 1 : surplus;
-							int target = fl.Target.Id;
-							if (fl.AlternativeRoutes.Count > 0)
-							{
-								target = fl.AlternativeRoutes.First().Steps.First();
-							}
-							factoryMoves.Add(new Move() { SourceId = f.Id, Target = target, Troops = troops });
-							surplus -= troops;
-						}
-						else
-						{
-							if (fl.Target.SurplusCyborgs < 0)
-							{
-								int troops = (-fl.Target.SurplusCyborgs < surplus) ? -fl.Target.SurplusCyborgs + 1 : surplus;
-								int target = fl.Target.Id;
-								if (fl.AlternativeRoutes.Count > 0)
-								{
-									int alternativesIndex = 0;
-									while ((alternativesIndex < fl.AlternativeRoutes.Count)
-										&& Factories[fl.AlternativeRoutes[alternativesIndex].Steps.First()].Owner == -1)
-									{
-										alternativesIndex++;
-									}
-									if (alternativesIndex < fl.AlternativeRoutes.Count)
-									{
-										target = fl.AlternativeRoutes[alternativesIndex].Steps.First();
-									}
-								}
-								factoryMoves.Add(new Move() { SourceId = f.Id, Target = target, Troops = troops });
-								surplus -= troops;
-							}
-						} //*/
+						int tc = (fl.Target.CyborgCount < surplus) ? fl.Target.CyborgCount + 1 : surplus;
+						moves.Add(new Move() { SourceId = f.Id, Target = fl.Target.Id, Troops = tc });
+						surplus -= tc;
+
 					}
 				}
 				else
@@ -268,32 +154,6 @@ public class Player
 					RemainingBombs--;
 				}
 			}
-			factoryMoves.Sort((fm1, fm2) =>
-			{
-				if (fm1.Target < fm2.Target)
-				{ return -1; }
-				if (fm1.Target > fm2.Target)
-				{ return 1; }
-				return 0;
-			});
-			int trc = 0;
-			int t = -1;
-			foreach (Move m in factoryMoves)
-			{
-				if ((t != -1) && (t != m.Target))
-				{
-					moves.Add(new Move() { SourceId = m.SourceId, Target = t, Troops = trc });
-					trc = 0;
-				}
-				trc += m.Troops;
-				t = m.Target;
-			}
-			if (t != -1)
-			{
-				moves.Add(new Move() { SourceId = f.Id, Target = t, Troops = trc });
-				trc = 0;
-			}
-
 		}
 		return moves;
 	}
@@ -334,12 +194,8 @@ public abstract class Entity
 public class Factory : Entity
 {
 	private int? _surplusCyborgs;
-	private bool _cyborPredictionCalculted;
-
 
 	private List<FactoryLink> _links;
-	private int[] _cyborPrediction = new int[20];
-
 
 	public Factory(int id, Link[] links) : base(id)
 	{
@@ -374,35 +230,6 @@ public class Factory : Entity
 	}
 
 
-	public int[] CyborgPredictionCount
-	{
-		get
-		{
-			if (!_cyborPredictionCalculted)
-			{
-				List<Troop> inboundTroops = Player.Troops.Where(t => t.Target == Id).OrderBy(t => t.RemaingTurns).ToList();
-
-				int ic = 0;
-				int count = CyborgCount;
-				int powner = Owner;
-				_cyborPrediction[0] = count;
-
-				for (int i = 1; i < 20; i++)
-				{
-					count += Production * powner;
-					while (ic < inboundTroops.Count && inboundTroops[ic].RemaingTurns == i)
-					{
-						count += inboundTroops[ic].CyborgCount * inboundTroops[ic].Owner;
-						ic++;
-					}
-					_cyborPrediction[i] = count;
-				}
-				_cyborPredictionCalculted = true;
-			}
-			return _cyborPrediction;
-		}
-	}
-
 
 	public int SurplusCyborgs
 	{
@@ -411,19 +238,16 @@ public class Factory : Entity
 			if (!_surplusCyborgs.HasValue)
 			{
 				int maxTurns = 0;
-				int production = 0;
 				int inbound = 0;
 				foreach (Troop troop in Player.Troops.Where(t => t.Target == Id && t.Owner != Owner))
 				{
 					inbound += troop.CyborgCount * troop.Owner;
 					if (troop.RemaingTurns > maxTurns)
 					{
-						//production += (troop.RemaingTurns - maxTurns) *Production;
 						maxTurns = troop.RemaingTurns;
 					}
-
 				}
-				_surplusCyborgs = this.CyborgCount + inbound + production;
+				_surplusCyborgs = this.CyborgCount + inbound + maxTurns*this.Production;
 			}
 			return _surplusCyborgs.Value;
 		}
@@ -435,7 +259,6 @@ public class Factory : Entity
 		CyborgCount = cyborgCount;
 		Production = production;
 		_surplusCyborgs = null;
-		_cyborPredictionCalculted = false;
 	}
 }
 
@@ -478,16 +301,12 @@ public class Link
 	public int FactoryId2 { get; }
 
 	public int Distance { get; }
-
-	public override string ToString()
-	{
-		return $"{FactoryId1} {FactoryId2} {Distance}";
-	}
 }
 
 public class FactoryLink
 {
 	private int _targetId;
+
 	private int _distanace;
 
 	public FactoryLink(int target, int distance)
@@ -509,30 +328,12 @@ public class FactoryLink
 	{
 		get
 		{
+
 			double d = _distanace;
 			double p = Target.Production;
 			return p / d;
 		}
-	}
 
-	public List<Route> AlternativeRoutes { get; set; }
-}
-
-public class Route
-{
-	public int Distance { get; set; }
-
-	public List<int> Steps { get; set; }
-
-	public override string ToString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.Append($"dist: {Distance} steps:");
-		foreach (int s in Steps)
-		{
-			sb.Append($"{s} ");
-		}
-		return sb.ToString();
 	}
 }
 
@@ -542,15 +343,9 @@ public class Move
 	public int Target { get; set; }
 	public int Troops { get; set; }
 	public bool SendBomb { get; set; }
-	public bool Inc { get; set; }
 
 	public override string ToString()
 	{
-		if (Inc)
-		{
-			return $"INC {SourceId}";
-		}
-
 		if (SendBomb)
 		{
 			return $"BOMB {SourceId} {Target}";

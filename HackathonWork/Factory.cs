@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HackathonWork
 {
-    internal class Factory : Entity
+    public class Factory : Entity
     {
         public Factory(Player owner, int x, int y, int unitCount, int productionRate) : base(EntityType.FACTORY)
         {
