@@ -89,6 +89,8 @@ namespace HackathonWork
 
         protected abstract void AddFrame();
 
+        protected abstract void AddFinishFrame();
+
         public void PlayGame()
 		{
 			_playerCount = _consoles.Length;
@@ -120,7 +122,7 @@ namespace HackathonWork
 				{
 					int turnCounter = 0;
 					int frameCounter = 0;
-					while (turnCounter < 200)
+					while (turnCounter < Settings.MaxRounds)
 					{
 						string[] playerResponse = new string[_playerCount];
 						for (int i = 0; i < _playerCount; i++)
@@ -141,18 +143,19 @@ namespace HackathonWork
 							HandlePlayerOutput(frameCounter++, turnCounter, i, new string[] { playerResponse[i] });
 						}
 						UpdateGame(turnCounter);
-
-
 						turnCounter++;
 						AddFrame();
+
 						Console.WriteLine(turnCounter);
 					}
-				}
+                    AddFinishFrame();
+                }
 				catch (Exception ex)
 				{
 					if (ex is GameOverException)
 					{
 						var goe = (GameOverException)ex;
+                                               
 					}
 					else if (ex is InvalidInputException)
 					{
@@ -166,7 +169,9 @@ namespace HackathonWork
 					{
 						throw ex;
 					}
-				}
+                    AddFinishFrame();
+                    
+                }
 			}
 			finally
 			{

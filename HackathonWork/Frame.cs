@@ -65,7 +65,6 @@ namespace HackathonWork
 
 		// inc info - source
 		public List<int> Incs { get; set; }
-
-       
-	}
+        public int? Winner { get; internal set; } = null;
+    }
 }

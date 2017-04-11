@@ -18,15 +18,20 @@ namespace GalaxyConquest
 		private double _scaleFactor;
 		private int _currentFrame = 0;
 		private int _tickCounter = 0;
+        private string[] playerNames;
 
 		private Graphics g;
 
-		public Viewer(List<Frame> frames)
+		public Viewer(List<Frame> frames, string player1 = "Player1", string player2= "player2")
 		{
 			InitializeComponent();
 			_frames = frames;
 			g = CreateGraphics();
 			g.Clear(Color.Black);
+
+            playerNames = new string[2];
+            playerNames[0] = player1;
+            playerNames[1] = player2;
 		}
 
 
@@ -49,7 +54,6 @@ namespace GalaxyConquest
 			_scaleFactor = delta;
 			
 			// g.Clear(Color.Black);
-
 
 			foreach (Frame.FactoryInfo f in frame.Factories)
 			{
@@ -253,14 +257,7 @@ namespace GalaxyConquest
 
 		private void Viewer_Click(object sender, EventArgs e)
 		{
-			if (timer1.Enabled)
-			{
-				timer1.Stop();
-			}
-			else
-			{
-				timer1.Start();
-			}
+
 		}
 
 		private void t(object sender, EventArgs e)
@@ -278,13 +275,16 @@ namespace GalaxyConquest
 				if (_currentFrame < _frames.Count - 1)
 				{
 					_currentFrame++;
-					DrawMap();
-
+					DrawMap();                    
 				}
 				else
 				{
 					timer1.Stop();
-					_currentFrame = 0;
+                    DrawMap();
+                    if (_frames[_currentFrame].Winner.HasValue)
+                    {
+                        PrintWinner(); 
+                    }
 				}
 			}
 			else
@@ -300,5 +300,49 @@ namespace GalaxyConquest
 
 
 		}
-	}
+
+        
+
+        private void PrintWinner()
+        {
+            if (_frames[_currentFrame].Winner.HasValue)
+            {
+                if (_frames[_currentFrame].Winner.Value == -1)
+                {
+                    // draw
+                    Pen p = new Pen(Color.White, (int)(50.0 * _scaleFactor));
+                    string drawstring = "DRAW";
+                    Font drawFond = new Font("Arial", (int)(1000 * _scaleFactor));
+
+                    g.DrawString(drawstring, drawFond, p.Brush, Width / 2 - (int)(400 * drawstring.Length * _scaleFactor), (int)(400 * _scaleFactor + 100));
+                }
+                else
+                {
+                    int winner = _frames[_currentFrame].Winner.Value;
+
+                    Pen p = new Pen(GetLightColor(winner), (int)(50.0 * _scaleFactor));
+                    string drawstring = $"{playerNames[winner]} Wins";
+                    Font drawFond = new Font("Arial", (int)(1000 * _scaleFactor));
+
+                    g.DrawString(drawstring, drawFond, p.Brush, Width / 2 - (int)(400 *drawstring.Length * _scaleFactor), (int)(400 * _scaleFactor + 100));
+
+
+                }                
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (timer1.Enabled)
+            {
+                timer1.Stop();
+                button1.Text = ">";
+            }
+            else
+            {
+                timer1.Start();
+                button1.Text = "||";
+            }
+        }
+    }
 }

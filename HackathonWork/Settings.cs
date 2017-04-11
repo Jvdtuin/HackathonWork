@@ -127,8 +127,9 @@ namespace HackathonWork
 		}
 
 		public const char ActionSplittingChar = ';';
+        internal static int MaxRounds = 50;
 
-		public static void SetLeageLevel(int leageLevel)
+        public static void SetLeageLevel(int leageLevel)
 		{
 			switch (leageLevel)
 			{

@@ -480,23 +480,25 @@ namespace HackathonWork
 			}
         }
 
-        protected override void AddFrame()
+
+
+        private Frame CreateFrame()
         {
             Frame frame = new Frame();
-            foreach(Factory factory in _factories)
+            foreach (Factory factory in _factories)
             {
-				frame.Factories.Add(new Frame.FactoryInfo()
-				{
-					Id = factory.Id,
-					CurrentProduction = factory.GetCurrentProductionRate(),
-					OwnerId = (factory.Owner != null) ? factory.Owner.Id : (int?)null,
-					UnitCount = factory.UnitCount,
-					X = factory.Position.X,
-					Y = factory.Position.Y,
-					
-                });                
+                frame.Factories.Add(new Frame.FactoryInfo()
+                {
+                    Id = factory.Id,
+                    CurrentProduction = factory.GetCurrentProductionRate(),
+                    OwnerId = (factory.Owner != null) ? factory.Owner.Id : (int?)null,
+                    UnitCount = factory.UnitCount,
+                    X = factory.Position.X,
+                    Y = factory.Position.Y,
+
+                });
             }
-            foreach(Troop troop in _troops)
+            foreach (Troop troop in _troops)
             {
                 frame.Troops.Add(new Frame.TroopInfo()
                 {
@@ -505,11 +507,11 @@ namespace HackathonWork
                     SourceId = troop.Source.Id,
                     DestinationId = troop.Destination.Id,
                     RemaingTurns = troop.RemainingTurns,
-					TotalTurns = troop.Source.Distances[troop.Destination.Id],
+                    TotalTurns = troop.Source.Distances[troop.Destination.Id],
                     UnitCount = troop.UnitCount,
                 });
             }
-            foreach(Bomb bomb in _bombs)
+            foreach (Bomb bomb in _bombs)
             {
                 frame.Bombs.Add(new Frame.BombInfo()
                 {
@@ -518,10 +520,10 @@ namespace HackathonWork
                     SourceId = bomb.Source.Id,
                     DestinationId = bomb.Destination.Id,
                     RemainingTurns = bomb.RemainingTurns,
-					TotalTurns = bomb.Source.Distances[bomb.Destination.Id],
-				});
+                    TotalTurns = bomb.Source.Distances[bomb.Destination.Id],
+                });
             }
-            foreach(Player player in _players)
+            foreach (Player player in _players)
             {
                 foreach (IncAction action in player.LastIncActions)
                 {
@@ -533,10 +535,30 @@ namespace HackathonWork
                     Score = player.Score,
                 });
             }
-            _frames.Add(frame);
+
+            return frame;
         }
 
-		private void AddToolTip(int id, string v)
+        protected override void AddFrame()
+        {
+            _frames.Add(CreateFrame());
+        }
+
+        protected override void AddFinishFrame()
+        {
+            Frame finischFrame = CreateFrame();
+            int winner = -1; // draw;
+            if (finischFrame.Players[0].Score > finischFrame.Players[1].Score) { winner = 0; }
+            if (finischFrame.Players[0].Score < finischFrame.Players[1].Score) { winner = 1; }
+
+
+            finischFrame.Winner = winner;
+
+            _frames.Add(finischFrame);
+        }
+
+
+        private void AddToolTip(int id, string v)
 		{
 			
 		}
