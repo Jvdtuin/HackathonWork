@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,10 +13,14 @@ namespace ConsoleApplication2
     {
         static void Main(string[] args)
         {
+		
             string applicationName = "ConsoleApplication1";
             string filePath = $".\\{applicationName}.exe";
             Process process = CreatePlayerProcess(filePath);
-
+			//Settings.Seed = 0;
+			//Settings.FactoryCount = 5;
+			//Settings.InitalUnitcount = 30;
+			Settings.Timeout = -1; // unlimitid 
             Referee referee = new Referee(new string[] { filePath, filePath });
 
             referee.PlayGame();

@@ -20,7 +20,7 @@ namespace HackathonWork
 
 		public struct FactoryInfo
 		{
-			public int OwnerId;
+			public int? OwnerId;
 			public int UnitCount;
 			public int CurrentProduction;
             internal int Id;

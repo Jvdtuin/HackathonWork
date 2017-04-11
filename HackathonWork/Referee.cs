@@ -28,12 +28,13 @@ namespace HackathonWork
 
         protected override void InitReferee(int playerCount)
         {
-            Seed = Settings.GetProperty<int>("seed");
-            int factoryCount = Settings.GetProperty<int>("factoryCount");
-            int InitUnitCount = Settings.GetProperty<int>("initialUnitCount");
+            
+
+            int factoryCount = Settings.FactoryCount;
+            int InitUnitCount = Settings.InitalUnitcount;
             _newTroops = new List<Troop>();
             _newBombs = new List<Bomb>();
-            _random = new Random(Seed);
+			_random = Settings.Random;
 
             _players = GeneratePlayers(playerCount);
             _factories = GenerateFactories(factoryCount, playerCount);
@@ -198,6 +199,10 @@ namespace HackathonWork
                     int source;
                     int destination;
                     int units;
+					if (string.IsNullOrEmpty(line))
+					{
+						throw new InvalidInputException("Line was empty");
+					}
                     string[] actions = line.Split(Settings.ActionSplittingChar);
                     foreach(string action in actions)
                     {
@@ -483,7 +488,7 @@ namespace HackathonWork
                 {
                     Id = factory.Id,
                     CurrentProduction = factory.GetCurrentProductionRate(),
-                    OwnerId = factory.Owner.Id,
+                    OwnerId = (factory.Owner!=null)?factory.Owner.Id:(int?)null,
                     UnitCount = factory.UnitCount,
                 });                
             }
