@@ -10,13 +10,13 @@ namespace HackathonWork
 		private string[] _consoles;
 		private Process[] _processes;
 
+		private Thread[] _errorStreamThreads;
+
 		private int _playerCount;
 
 		protected MultiReferee(string[] consoles)
 		{
 			_consoles = consoles;
-
-			
 		}
 
 		private Process CreatePlayerProcess(string filename)
@@ -32,9 +32,9 @@ namespace HackathonWork
 			return process;
 		}
 
-		private static void ErrorStream(Process process)
+		private static Thread ErrorStream(Process process)
 		{
-			new Thread(() =>
+			Thread result = new Thread(() =>
 			{
 				while (true)
 				{
@@ -45,11 +45,26 @@ namespace HackathonWork
 					}
 				}
 			});
+			result.Start();
+			return result;
 		}
 
 		private static string ReadLine(Process process)
 		{
-			return process.StandardOutput.ReadLine();
+			string result = null;
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
+			Thread worker = new Thread(() =>
+				{
+					result = process.StandardOutput.ReadLine();
+				});
+			worker.Start();
+			while ((sw.ElapsedMilliseconds < Settings.Timeout || Settings.Timeout == -1) && string.IsNullOrEmpty(result))
+			{
+
+			}
+			return result;
+			 
 		}
 
 		private static void WriteLine(Process process, string line)
@@ -74,73 +89,86 @@ namespace HackathonWork
 			_playerCount = _consoles.Length;
 			// initialize the player consoles
 			_processes = new Process[_playerCount];
-			for (int i = 0; i < _playerCount; i++)
-			{
-				Process p = CreatePlayerProcess(_consoles[i]);
-                _processes[i] = p;
-				p.Start();
-			}
-			// create the player structure
-			InitReferee(_playerCount);
-			
-			// send initialization data to the player consolose
-			for (int i=0; i< _playerCount; i++)
-			{
-				string[] initLines = GetInitInputForPlayer(i);
-				for (int j=0; j < initLines.Length; j++)
-				{
-					WriteLine(_processes[i], initLines[j]);
-				}
-			}
-
+			_errorStreamThreads = new Thread[_playerCount];
 			try
 			{
-				int turnCounter = 0;
-				int frameCounter = 0;
-				while (turnCounter < 200)
+				for (int i = 0; i < _playerCount; i++)
 				{
-					string[] playerResponse = new string[_playerCount];
-					for (int i=0; i<_playerCount; i++)
+					Process p = CreatePlayerProcess(_consoles[i]);
+					_processes[i] = p;
+					p.Start();
+					_errorStreamThreads[i] = ErrorStream(p);
+				}
+				// create the player structure
+				InitReferee(_playerCount);
+
+				// send initialization data to the player consolose
+				for (int i = 0; i < _playerCount; i++)
+				{
+					string[] initLines = GetInitInputForPlayer(i);
+					for (int j = 0; j < initLines.Length; j++)
 					{
-						// initialize the turn
-						string[] turnLines = GetInitInputForPlayer(turnCounter, i);
-						for (int j = 0; j < turnLines.Length; j++)
+						WriteLine(_processes[i], initLines[j]);
+					}
+				}
+				try
+				{
+					int turnCounter = 0;
+					int frameCounter = 0;
+					while (turnCounter < 200)
+					{
+						string[] playerResponse = new string[_playerCount];
+						for (int i = 0; i < _playerCount; i++)
 						{
-							WriteLine(_processes[i], turnLines[j]);
+							// initialize the turn
+							string[] turnLines = GetInitInputForPlayer(turnCounter, i);
+							for (int j = 0; j < turnLines.Length; j++)
+							{
+								WriteLine(_processes[i], turnLines[j]);
+							}
+							// and wait for the player to respond
+							playerResponse[i] = ReadLine(_processes[i]);
 						}
-						// and wait for the player to respond
-						playerResponse[i] = ReadLine(_processes[i]);
-					}
-					// process the player responses 
+						// process the player responses 
 
-					for (int i=0; i<_playerCount; i++)
+						for (int i = 0; i < _playerCount; i++)
+						{
+							HandlePlayerOutput(frameCounter++, turnCounter, i, new string[] { playerResponse[i] });
+						}
+						UpdateGame(turnCounter);
+
+
+						turnCounter++;
+						AddFrame();
+						Console.WriteLine(turnCounter);
+					}
+				}
+				catch (Exception ex)
+				{
+					if (ex is GameOverException)
 					{
-						HandlePlayerOutput(frameCounter++, turnCounter, i, new string[] { playerResponse[i] });
+						var goe = (GameOverException)ex;
 					}
-					UpdateGame(turnCounter);
-
-
-					turnCounter++;
-                    AddFrame();
+					else if (ex is InvalidInputException)
+					{
+						var iie = (InvalidInputException)ex;
+					}
+					else if (ex is LostException)
+					{
+						var le = (LostException)ex;
+					}
+					else
+					{
+						throw ex;
+					}
 				}
 			}
-			catch (Exception ex)
+			finally
 			{
-				if (ex is GameOverException)
+				for (int i = 0; i < _playerCount; i++)
 				{
-					var goe = (GameOverException)ex;
-				}
-				else if (ex is InvalidInputException)
-				{
-					var iie = (InvalidInputException)ex;
-				}
-				else if (ex is LostException)
-				{
-					var le = (LostException)ex;
-				}
-				else
-				{
-					throw ex;
+					_processes[i].Kill();
+					_errorStreamThreads[i].Abort();
 				}
 			}
 		}

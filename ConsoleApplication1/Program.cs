@@ -177,10 +177,6 @@ public class Player
         foreach (Factory f in myFactories)
         {
             Console.Error.Write($"({f.Id})");
-            for (int i = 0; i < 20; i++)
-            {
-                Console.Error.Write($" {f.CyborgPredictionCount[i]}");
-            }
             Console.Error.WriteLine();
             int surplus = f.SurplusCyborgs;
             f.Links.Sort((l1, l2) =>
