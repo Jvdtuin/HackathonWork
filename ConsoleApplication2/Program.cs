@@ -16,11 +16,11 @@ namespace ConsoleApplication2
 		
             string applicationName = "ConsoleApplication1";
             string filePath = $".\\{applicationName}.exe";
-            Process process = CreatePlayerProcess(filePath);
+          
 			//Settings.Seed = 0;
 			//Settings.FactoryCount = 5;
 			//Settings.InitalUnitcount = 30;
-			Settings.Timeout = -1; // unlimitid 
+			Settings.Timeout = 1000; // unlimitid 
             Referee referee = new Referee(new string[] { filePath, filePath });
 
             referee.PlayGame();
@@ -33,7 +33,6 @@ namespace ConsoleApplication2
         private static Process CreatePlayerProcess(string filename)
         {
             Process process = new Process();
-
             process.StartInfo = new ProcessStartInfo(filename);
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.ErrorDialog = true;

@@ -1,6 +1,6 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace GalaxyConquest
 {
-	partial class Form1
+	partial class Viewer
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,11 +29,32 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.SuspendLayout();
+			// 
+			// timer1
+			// 
+			this.timer1.Interval = 40;
+			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			// 
+			// Viewer
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Text = "Form1";
+			this.ClientSize = new System.Drawing.Size(1061, 547);
+			this.Name = "Viewer";
+			this.Text = "Viewer";
+			this.Activated += new System.EventHandler(this.Viewer_Activated);
+			this.Load += new System.EventHandler(this.t);
+			this.Shown += new System.EventHandler(this.Viewer_Shown);
+			this.Click += new System.EventHandler(this.Viewer_Click);
+			this.Resize += new System.EventHandler(this.Viewer_Resize);
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion
+
+		private System.Windows.Forms.Timer timer1;
 	}
 }
-

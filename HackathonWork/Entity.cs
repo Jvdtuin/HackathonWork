@@ -1,6 +1,6 @@
 ﻿namespace HackathonWork
 {
-    internal abstract class Entity
+    public abstract class Entity
     {
         private static int unqueEntiyId = 0;
 
@@ -21,5 +21,10 @@
         }
 
         public int Id { get { return _id; } }
+
+		internal static void Reset()
+		{
+			unqueEntiyId = 0;
+		}
     }
 }

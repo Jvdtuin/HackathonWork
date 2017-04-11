@@ -20,8 +20,8 @@ namespace HackathonWork
 		internal const int PlayerInitUnitsMin = 15;
 		internal const int PlayerInitUnitsMax = 30;
 
-		internal const int Width = 16000;
-		internal const int Height = 6500;
+		public const int Width = 16000;
+		public const int Height = 6500;
 
 		internal const int ExtraSpaceBetweenFactories = 300;
 		internal const int ConstIncreaseProduction = 10;
@@ -128,7 +128,7 @@ namespace HackathonWork
 
 		public const char ActionSplittingChar = ';';
 
-		internal static void SetLeageLevel(int leageLevel)
+		public static void SetLeageLevel(int leageLevel)
 		{
 			switch (leageLevel)
 			{

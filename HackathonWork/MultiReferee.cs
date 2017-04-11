@@ -36,14 +36,19 @@ namespace HackathonWork
 		{
 			Thread result = new Thread(() =>
 			{
-				while (true)
+				try
 				{
-					int current;
-					while ((current = process.StandardError.Read()) >= 0)
+					while (true)
 					{
-						// error stream 
+						int current;
+						while ((current = process.StandardError.Read()) >= 0)
+						{
+							// error stream 
+						}
 					}
 				}
+				catch
+				{ }
 			});
 			result.Start();
 			return result;

@@ -23,8 +23,10 @@ namespace HackathonWork
 			public int? OwnerId;
 			public int UnitCount;
 			public int CurrentProduction;
-            internal int Id;
-        }
+            public int Id;
+			public double Y;
+			public double X;
+		}
 
 		public List<FactoryInfo> Factories { get; set; }
 
@@ -36,6 +38,7 @@ namespace HackathonWork
 			public int DestinationId;
 			public int UnitCount;
 			public int RemaingTurns;
+			public int TotalTurns;
             internal int Id;
         }
 
@@ -48,8 +51,9 @@ namespace HackathonWork
             public int SourceId;
             public int DestinationId;
             public int RemainingTurns;
-            internal int Id;
-        }
+            public int Id;
+			public int TotalTurns;
+		}
 		public List<BombInfo> Bombs { get; set; }
 		
         public struct PlayerInfo
