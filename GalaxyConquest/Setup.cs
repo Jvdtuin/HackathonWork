@@ -31,7 +31,7 @@ namespace GalaxyConquest
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-
+		
 
 
 			string filePath = textBox1.Text;
@@ -48,24 +48,19 @@ namespace GalaxyConquest
 				players[0] = "ConsoleApplication1.exe";
 			}
 
-			HackathonWork.Settings.SetLeageLevel(0);
+			int index = Leage.SelectedIndex;
+			if (index == 2)
+			{ index = 3; }
+
+			HackathonWork.Settings.SetLeageLevel(index);
 						
 			//Settings.Seed = 0;
 			//Settings.FactoryCount = 5;
 			//Settings.InitalUnitcount = 30;
 
-			HackathonWork.Settings.Timeout = 1000;  
+			HackathonWork.Settings.Timeout = -1;  
 
 			Referee referee = new Referee(players);
-
-			if (rbtnRed.Checked)
-			{
-				referee.ConsoleErrorOutputPlayer1 += Referee_ConsoleErrorOutputPlayer;
-			}
-			else
-			{
-				referee.ConsoleErrorOutputPlayer2 += Referee_ConsoleErrorOutputPlayer;
-			}
 
 			DebugBreak debugMethod = null;
 
@@ -83,10 +78,6 @@ namespace GalaxyConquest
 
 		}
 
-		private void Referee_ConsoleErrorOutputPlayer(object sender, ConsoleErrorOutputEventArgs e)
-		{
-			DebugOutput.Text = DebugOutput.Text + e.Line; 
-		}
 
 		private void label1_Click(object sender, EventArgs e)
 		{

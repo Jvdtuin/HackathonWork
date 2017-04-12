@@ -33,8 +33,6 @@
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.browse = new System.Windows.Forms.Button();
 			this.chbxDebug = new System.Windows.Forms.CheckBox();
-			this.DebugOutput = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
 			this.rbtnRed = new System.Windows.Forms.RadioButton();
 			this.rbtnBlue = new System.Windows.Forms.RadioButton();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -46,7 +44,7 @@
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(514, 462);
+			this.button1.Location = new System.Drawing.Point(514, 133);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 0;
@@ -91,23 +89,6 @@
 			this.chbxDebug.TabIndex = 4;
 			this.chbxDebug.Text = "I want to debug";
 			this.chbxDebug.UseVisualStyleBackColor = true;
-			// 
-			// DebugOutput
-			// 
-			this.DebugOutput.Location = new System.Drawing.Point(12, 150);
-			this.DebugOutput.Multiline = true;
-			this.DebugOutput.Name = "DebugOutput";
-			this.DebugOutput.Size = new System.Drawing.Size(356, 305);
-			this.DebugOutput.TabIndex = 5;
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(9, 134);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(111, 13);
-			this.label2.TabIndex = 6;
-			this.label2.Text = "program debug output";
 			// 
 			// rbtnRed
 			// 
@@ -182,15 +163,13 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(602, 497);
+			this.ClientSize = new System.Drawing.Size(602, 193);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.Leage);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.cbLevel);
 			this.Controls.Add(this.rbtnBlue);
 			this.Controls.Add(this.rbtnRed);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.DebugOutput);
 			this.Controls.Add(this.chbxDebug);
 			this.Controls.Add(this.browse);
 			this.Controls.Add(this.textBox1);
@@ -211,8 +190,6 @@
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Button browse;
 		private System.Windows.Forms.CheckBox chbxDebug;
-		private System.Windows.Forms.TextBox DebugOutput;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.RadioButton rbtnRed;
 		private System.Windows.Forms.RadioButton rbtnBlue;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;

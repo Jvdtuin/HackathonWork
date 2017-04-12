@@ -80,7 +80,6 @@ namespace GalaxyConquest
 		private void DrawTroop(Frame frame,  Frame.TroopInfo t, bool showNumber)
 		{
 			Pen p = new Pen(Color.Black, (int)(10.0 * _scaleFactor));
-
 			Frame.FactoryInfo sf = frame.Factories[t.SourceId];
 			Frame.FactoryInfo df = frame.Factories[t.DestinationId];
 
@@ -158,7 +157,7 @@ namespace GalaxyConquest
 			int x = (int)(tx * _scaleFactor) + 100;
 			int y = (int)(ty * _scaleFactor) + 100;
 			int r = (int)(120 * _scaleFactor);
-			g.FillEllipse(p.Brush, x - r, y - r, 2 * r, 2 * r);
+			g.FillEllipse(p.Brush, x - r-1, y - r-1, 2 * r+2, 2 * r+2);
 			rt--;
 			pt++;
 			tx = (sf.X * rt + df.X * pt) / tt;
@@ -166,11 +165,12 @@ namespace GalaxyConquest
 
 			x = (int)(tx * _scaleFactor) + 100;
 			y = (int)(ty * _scaleFactor) + 100;
-			r = (int)(100 * _scaleFactor);
-			p.Color = GetColor(b.OwnerId);
+
+			p.Color = Color.Yellow;
 
 			g.FillEllipse(p.Brush, x - r, y - r, 2 * r, 2 * r);
-
+			p.Color = GetColor(b.OwnerId);
+			g.DrawEllipse(p, x - r, y - r, 2 * r, 2 * r);
 		}
 
 
@@ -300,6 +300,11 @@ namespace GalaxyConquest
 				foreach (Frame.TroopInfo t in frame.Troops)
 				{
 					DrawTroop(frame, t, true);
+					
+				}
+				foreach(Frame.BombInfo b in frame.Bombs)
+				{
+					DrawBomb(frame, b);
 				}
 			}
 		}
