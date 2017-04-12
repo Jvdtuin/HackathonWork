@@ -122,6 +122,7 @@ namespace HackathonWork
 				{
 					int turnCounter = 0;
 					int frameCounter = 0;
+					AddFrame();
 					while (turnCounter < Settings.MaxRounds)
 					{
 						string[] playerResponse = new string[_playerCount];

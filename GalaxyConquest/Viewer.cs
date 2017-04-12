@@ -209,7 +209,8 @@ namespace GalaxyConquest
 
 			drawString = factory.Id.ToString();
 			drawFond = new Font("Arial", (int)(150 * _scaleFactor));
-			g.DrawString(drawString, drawFond, brush, x + tc * 3, y + tc * 3);
+			brush = new SolidBrush(Color.Green);
+			g.DrawString(drawString, drawFond, brush, x + tc * 2, y + tc * 2);
 		}
 
 		private void DrawScore()
