@@ -34,13 +34,17 @@ namespace GalaxyConquest
             playerNames[1] = player2;
 		}
 
-
-		private void Viewer_Resize(object sender, EventArgs e)
+		private void Repaint()
 		{
 			g = CreateGraphics();
 			g.Clear(Color.Black);
 			DrawMap();
-			
+
+		}
+
+		private void Viewer_Resize(object sender, EventArgs e)
+		{
+			Repaint();
 		}
 
 		private void DrawMap()
@@ -76,7 +80,6 @@ namespace GalaxyConquest
 		private void DrawTroop(Frame frame,  Frame.TroopInfo t, bool showNumber)
 		{
 			Pen p = new Pen(Color.Black, (int)(10.0 * _scaleFactor));
-
 			Frame.FactoryInfo sf = frame.Factories[t.SourceId];
 			Frame.FactoryInfo df = frame.Factories[t.DestinationId];
 
@@ -154,7 +157,7 @@ namespace GalaxyConquest
 			int x = (int)(tx * _scaleFactor) + 100;
 			int y = (int)(ty * _scaleFactor) + 100;
 			int r = (int)(120 * _scaleFactor);
-			g.FillEllipse(p.Brush, x - r, y - r, 2 * r, 2 * r);
+			g.FillEllipse(p.Brush, x - r-1, y - r-1, 2 * r+2, 2 * r+2);
 			rt--;
 			pt++;
 			tx = (sf.X * rt + df.X * pt) / tt;
@@ -162,11 +165,12 @@ namespace GalaxyConquest
 
 			x = (int)(tx * _scaleFactor) + 100;
 			y = (int)(ty * _scaleFactor) + 100;
-			r = (int)(100 * _scaleFactor);
-			p.Color = GetColor(b.OwnerId);
+
+			p.Color = Color.Yellow;
 
 			g.FillEllipse(p.Brush, x - r, y - r, 2 * r, 2 * r);
-
+			p.Color = GetColor(b.OwnerId);
+			g.DrawEllipse(p, x - r, y - r, 2 * r, 2 * r);
 		}
 
 
@@ -209,7 +213,8 @@ namespace GalaxyConquest
 
 			drawString = factory.Id.ToString();
 			drawFond = new Font("Arial", (int)(150 * _scaleFactor));
-			g.DrawString(drawString, drawFond, brush, x + tc * 3, y + tc * 3);
+			brush = new SolidBrush(Color.Green);
+			g.DrawString(drawString, drawFond, brush, x + tc * 2, y + tc * 2);
 		}
 
 		private void DrawScore()
@@ -247,12 +252,12 @@ namespace GalaxyConquest
 
 		private void Viewer_Activated(object sender, EventArgs e)
 		{
-
+			Repaint();
 		}
 
 		private void Viewer_Shown(object sender, EventArgs e)
 		{
-			DrawMap();
+			Repaint();
 		}
 
 		private void Viewer_Click(object sender, EventArgs e)
@@ -272,10 +277,11 @@ namespace GalaxyConquest
 			_tickCounter %= 5;
 			if (_tickCounter == 0)
 			{
+				textBox2.Text = $"{_currentFrame} of {_frames.Count}";
 				if (_currentFrame < _frames.Count - 1)
 				{
 					_currentFrame++;
-					DrawMap();                    
+					DrawMap();  			                  
 				}
 				else
 				{
@@ -294,11 +300,13 @@ namespace GalaxyConquest
 				foreach (Frame.TroopInfo t in frame.Troops)
 				{
 					DrawTroop(frame, t, true);
+					
 				}
-
+				foreach(Frame.BombInfo b in frame.Bombs)
+				{
+					DrawBomb(frame, b);
+				}
 			}
-
-
 		}
 
         

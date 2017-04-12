@@ -24,26 +24,79 @@ namespace GalaxyConquest
 
 		}
 
+		private void Debug()
+		{
+			MessageBox.Show("You can attach your debugger now");
+		}
+
 		private void button1_Click(object sender, EventArgs e)
 		{
-			string applicationName = "ConsoleApplication1";
-			string filePath = $".\\ConsoleApplication1.exe";
+		
 
-			HackathonWork.Settings.SetLeageLevel(1);
 
+			string filePath = textBox1.Text;
+
+			string[] players = new string[2];
+			if (rbtnBlue.Checked)
+			{
+				players[0] = filePath;
+				players[1] = "ConsoleApplication1.exe";
+			}
+			else
+			{
+				players[1] = filePath;
+				players[0] = "ConsoleApplication1.exe";
+			}
+
+			int index = Leage.SelectedIndex;
+			if (index == 2)
+			{ index = 3; }
+
+			HackathonWork.Settings.SetLeageLevel(index);
+						
 			//Settings.Seed = 0;
 			//Settings.FactoryCount = 5;
 			//Settings.InitalUnitcount = 30;
-			HackathonWork.Settings.Timeout = -1; // unlimitid 
-			Referee referee = new Referee(new string[] { ".\\ConsoleApplication1.exe", ".\\ConsoleApplication3.exe" });
 
-			referee.PlayGame();
+			HackathonWork.Settings.Timeout = -1;  
+
+			Referee referee = new Referee(players);
+
+			DebugBreak debugMethod = null;
+
+			if (chbxDebug.Checked)
+			{
+				debugMethod = this.Debug;
+			}
+						
+			referee.PlayGame(debugMethod);
 
 			List<Frame> frames = referee.GetFrames();
 
 			Viewer v = new Viewer(frames);
 			v.Show();
 
+		}
+
+
+		private void label1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void radioButton2_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void browse_Click(object sender, EventArgs e)
+		{
+			openFileDialog1.FileName = "Player.exe";
+			if (openFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				textBox1.Text = openFileDialog1.FileName;
+
+			}
 		}
 	}
 }

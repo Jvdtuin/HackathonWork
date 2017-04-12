@@ -13,7 +13,7 @@ namespace HackathonWork
 
 		internal const int MinProductionRate = 0;
 		internal const int MaxProductionRate = 3;
-		internal const int MinTotalProductionRatat = 4;
+		internal const int MinTotalProductionRate = 4;
 
 		internal static int BombsPerPlayer;
 
@@ -24,7 +24,7 @@ namespace HackathonWork
 		public const int Height = 6500;
 
 		internal const int ExtraSpaceBetweenFactories = 300;
-		internal const int ConstIncreaseProduction = 10;
+		internal const int CostIncreaseProduction = 10;
 
 		internal static T GetProperty<T>(string key)
 		{

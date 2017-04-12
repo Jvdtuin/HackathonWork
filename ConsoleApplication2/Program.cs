@@ -23,7 +23,7 @@ namespace ConsoleApplication2
 			Settings.Timeout = 1000; // unlimitid 
             Referee referee = new Referee(new string[] { filePath, filePath });
 
-            referee.PlayGame();
+            referee.PlayGame(null);
 
             List<Frame> frames = referee.GetFrames();
 

@@ -118,7 +118,7 @@ namespace HackathonWork
             }
             // Make sure that the initial accumulated production rate for all the factories is 
             // at least MIN_TOTAL_PRODUCTION_RATE
-            for (int j = 1; totalProductionRate < Settings.MinTotalProductionRatat
+            for (int j = 1; totalProductionRate < Settings.MinTotalProductionRate
                  && j < factories.Length; j++)
             {
                 if (factories[j].ProductionRate < Settings.MaxProductionRate)
@@ -357,10 +357,10 @@ namespace HackathonWork
                 // increase production
 				foreach (IncAction incAction in player.LastIncActions)
 				{
-					if (incAction.Source.UnitCount >= Settings.ConstIncreaseProduction && incAction.Source.ProductionRate < Settings.MaxProductionRate )
+					if (incAction.Source.UnitCount >= Settings.CostIncreaseProduction && incAction.Source.ProductionRate < Settings.MaxProductionRate )
 					{
 						incAction.Source.ProductionRate++;
-						incAction.Source.UnitCount -= Settings.ConstIncreaseProduction;
+						incAction.Source.UnitCount -= Settings.CostIncreaseProduction;
 						AddToolTip(player.Id, $"IncAction {player.Id} {incAction.Source.Id}");
 					}
 				}
