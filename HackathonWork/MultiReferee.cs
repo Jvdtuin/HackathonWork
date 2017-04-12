@@ -5,6 +5,10 @@ using System.Threading;
 
 namespace HackathonWork
 {
+	public delegate void DebugBreak(); 
+
+	
+
 	public abstract class MultiReferee
 	{
 		private string[] _consoles;
@@ -32,7 +36,7 @@ namespace HackathonWork
 			return process;
 		}
 
-		private static Thread ErrorStream(Process process)
+		private Thread ErrorStream(Process process, int player)
 		{
 			Thread result = new Thread(() =>
 			{
@@ -40,11 +44,9 @@ namespace HackathonWork
 				{
 					while (true)
 					{
-						int current;
-						while ((current = process.StandardError.Read()) >= 0)
-						{
-							// error stream 
-						}
+
+						string current = process.StandardError.ReadLine();
+						OnConsoleErrorOutput(new ConsoleErrorOutputEventArgs() { Line = current }, player) ;
 					}
 				}
 				catch
@@ -54,7 +56,7 @@ namespace HackathonWork
 			return result;
 		}
 
-		private static string ReadLine(Process process)
+		private string ReadLine(Process process)
 		{
 			string result = null;
 			Stopwatch sw = new Stopwatch();
@@ -91,7 +93,9 @@ namespace HackathonWork
 
         protected abstract void AddFinishFrame();
 
-        public void PlayGame()
+
+
+        public void PlayGame(DebugBreak debugBreak)
 		{
 			_playerCount = _consoles.Length;
 			// initialize the player consoles
@@ -104,8 +108,14 @@ namespace HackathonWork
 					Process p = CreatePlayerProcess(_consoles[i]);
 					_processes[i] = p;
 					p.Start();
-					_errorStreamThreads[i] = ErrorStream(p);
+					_errorStreamThreads[i] = ErrorStream(p, i);
 				}
+				
+				if (debugBreak != null)
+				{
+					debugBreak();
+				}
+
 				// create the player structure
 				InitReferee(_playerCount);
 
@@ -128,14 +138,16 @@ namespace HackathonWork
 						string[] playerResponse = new string[_playerCount];
 						for (int i = 0; i < _playerCount; i++)
 						{
-							// initialize the turn
-							string[] turnLines = GetInitInputForPlayer(turnCounter, i);
-							for (int j = 0; j < turnLines.Length; j++)
-							{
-								WriteLine(_processes[i], turnLines[j]);
-							}
-							// and wait for the player to respond
-							playerResponse[i] = ReadLine(_processes[i]);
+
+								// initialize the turn
+								string[] turnLines = GetInitInputForPlayer(turnCounter, i);
+								for (int j = 0; j < turnLines.Length; j++)
+								{
+									WriteLine(_processes[i], turnLines[j]);
+								}
+								// and wait for the player to respond
+								playerResponse[i] = ReadLine(_processes[i]);
+							
 						}
 						// process the player responses 
 
@@ -168,7 +180,7 @@ namespace HackathonWork
 					}
 					else
 					{
-						throw ex;
+						
 					}
                     AddFinishFrame();
                     
@@ -178,10 +190,37 @@ namespace HackathonWork
 			{
 				for (int i = 0; i < _playerCount; i++)
 				{
-					_processes[i].Kill();
-					_errorStreamThreads[i].Abort();
+					try
+					{
+						_processes[i].Kill();
+						_errorStreamThreads[i].Abort();
+					}
+					catch
+					{ }
 				}
 			}
 		}
+
+
+		protected virtual void OnConsoleErrorOutput(ConsoleErrorOutputEventArgs e , int player)
+		{
+			if (player == 0)
+			{
+				ConsoleErrorOutputPlayer1?.Invoke(this, e);
+			}
+			else
+			{
+				ConsoleErrorOutputPlayer2?.Invoke(this, e);
+			}
+		}
+
+		public event EventHandler<ConsoleErrorOutputEventArgs> ConsoleErrorOutputPlayer1;
+		public event EventHandler<ConsoleErrorOutputEventArgs> ConsoleErrorOutputPlayer2;
+	}
+
+	public class ConsoleErrorOutputEventArgs : EventArgs
+	{
+		public string Line { get; set; }
+
 	}
 }

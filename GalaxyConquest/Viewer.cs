@@ -34,13 +34,17 @@ namespace GalaxyConquest
             playerNames[1] = player2;
 		}
 
-
-		private void Viewer_Resize(object sender, EventArgs e)
+		private void Repaint()
 		{
 			g = CreateGraphics();
 			g.Clear(Color.Black);
 			DrawMap();
-			
+
+		}
+
+		private void Viewer_Resize(object sender, EventArgs e)
+		{
+			Repaint();
 		}
 
 		private void DrawMap()
@@ -248,12 +252,12 @@ namespace GalaxyConquest
 
 		private void Viewer_Activated(object sender, EventArgs e)
 		{
-
+			Repaint();
 		}
 
 		private void Viewer_Shown(object sender, EventArgs e)
 		{
-			DrawMap();
+			Repaint();
 		}
 
 		private void Viewer_Click(object sender, EventArgs e)
@@ -273,10 +277,11 @@ namespace GalaxyConquest
 			_tickCounter %= 5;
 			if (_tickCounter == 0)
 			{
+				textBox2.Text = $"{_currentFrame} of {_frames.Count}";
 				if (_currentFrame < _frames.Count - 1)
 				{
 					_currentFrame++;
-					DrawMap();                    
+					DrawMap();  			                  
 				}
 				else
 				{
@@ -296,10 +301,7 @@ namespace GalaxyConquest
 				{
 					DrawTroop(frame, t, true);
 				}
-
 			}
-
-
 		}
 
         

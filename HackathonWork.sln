@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalaxyConquest", "GalaxyCon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication3", "ConsoleApplication3\ConsoleApplication3.csproj", "{17B78435-3E21-48CD-8085-AA62C0EFD2C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csproj", "{5ACF3E7A-E93A-4049-8F0B-F6722B456080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{17B78435-3E21-48CD-8085-AA62C0EFD2C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17B78435-3E21-48CD-8085-AA62C0EFD2C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17B78435-3E21-48CD-8085-AA62C0EFD2C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ACF3E7A-E93A-4049-8F0B-F6722B456080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ACF3E7A-E93A-4049-8F0B-F6722B456080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ACF3E7A-E93A-4049-8F0B-F6722B456080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ACF3E7A-E93A-4049-8F0B-F6722B456080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
