@@ -218,7 +218,7 @@ namespace HackathonWork
                 
                         if (action.IsMove(out  source, out destination, out units))
                         {
-                            if (Settings.MoveRestrictionEnabled && !(player.LastBombActions.Count > 0))
+                            if (Settings.MoveRestrictionEnabled && !(player.LastMoveActions.Count > 0))
                             {
                                 continue;
                             }
@@ -241,7 +241,7 @@ namespace HackathonWork
                             player.LastMoveActions.Add(new MoveAction(_factories[source], _factories[destination], units));
                         }
                         else if (action.IsBomb(out source, out destination))
-                        {
+                        {                           
                             if (source >= _factories.Length)
                             {
                                 throw new InvalidInputException($"0 <= source < {_factories.Length}", source.ToString());

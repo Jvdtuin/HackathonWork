@@ -17,6 +17,8 @@ namespace GalaxyConquest
 		public Setup()
 		{
 			InitializeComponent();
+            cbLevel.SelectedIndex = 0;
+            Leage.SelectedIndex = 0;
 		}
 
 		private void Setup_Load(object sender, EventArgs e)
@@ -94,5 +96,15 @@ namespace GalaxyConquest
 
 			}
 		}
-	}
+
+        private void rbtnBlue_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
