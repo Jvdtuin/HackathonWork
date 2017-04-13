@@ -5,7 +5,7 @@ namespace HackathonWork
 {
     public class Factory : Entity
     {
-        public Factory(Player owner, int x, int y, int unitCount, int productionRate) : base(EntityType.FACTORY)
+        public Factory(Player owner, int x, int y, int unitCount, int productionRate, GetId getId) : base(EntityType.FACTORY, getId)
         {
             Owner = owner;
             Position = new Point(x, y);

@@ -26,7 +26,9 @@ namespace HackathonWork
 		internal const int ExtraSpaceBetweenFactories = 300;
 		internal const int CostIncreaseProduction = 10;
 
-		internal static T GetProperty<T>(string key)
+        public static int MaxRounds { get; set; } = 200;
+
+        internal static T GetProperty<T>(string key)
 		{
 			if (Properties.ContainsKey(key))
 			{
@@ -127,7 +129,7 @@ namespace HackathonWork
 		}
 
 		public const char ActionSplittingChar = ';';
-        internal static int MaxRounds = 50;
+       
 
         public static void SetLeageLevel(int leageLevel)
 		{

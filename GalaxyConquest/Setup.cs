@@ -32,8 +32,6 @@ namespace GalaxyConquest
 		private void button1_Click(object sender, EventArgs e)
 		{
 		
-
-
 			string filePath = textBox1.Text;
 
 			string[] players = new string[2];
@@ -53,34 +51,32 @@ namespace GalaxyConquest
 			{ index = 3; }
 
 			HackathonWork.Settings.SetLeageLevel(index);
-						
-			//Settings.Seed = 0;
-			//Settings.FactoryCount = 5;
-			//Settings.InitalUnitcount = 30;
+
+            //Settings.Seed = 0;
+            //Settings.FactoryCount = 5;
+            //Settings.InitalUnitcount = 30;
+            HackathonWork.Settings.MaxRounds = 50; 
 
 			HackathonWork.Settings.Timeout = -1;  
 
 			Referee referee = new Referee(players);
-
-			DebugBreak debugMethod = null;
-
-			if (chbxDebug.Checked)
+            DebugBreak debugMethod = null;
+            if (chbxDebug.Checked)
 			{
 				debugMethod = this.Debug;
 			}
-						
-			referee.PlayGame(debugMethod);
+            try
+            {
+                referee.PlayGame(debugMethod);
+            }
+            catch
+            {
+                // who throw the exception?
+            }
 
 			List<Frame> frames = referee.GetFrames();
-
 			Viewer v = new Viewer(frames);
 			v.Show();
-
-		}
-
-
-		private void label1_Click(object sender, EventArgs e)
-		{
 
 		}
 

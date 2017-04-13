@@ -13,7 +13,7 @@ namespace HackathonWork
         protected Factory _source;
         protected Factory _destination;
 		 
-        public MovingEntity(EntityType type, Factory source, Factory destination) : base(type)
+        public MovingEntity(EntityType type, Factory source, Factory destination, GetId getId) : base(type, getId)
         {
             _owner = source.Owner;
             _source = source;

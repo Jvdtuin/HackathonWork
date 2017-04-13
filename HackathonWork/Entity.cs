@@ -1,16 +1,18 @@
 ﻿namespace HackathonWork
 {
+    public delegate int GetId();
+
     public abstract class Entity
     {
-        private static int unqueEntiyId = 0;
-
+ 
         protected int _id;
         protected EntityType _type;
 
-        public Entity(EntityType type )
+        public Entity(EntityType type, GetId getId )
         {
             _type = type;
-            _id = unqueEntiyId++;
+            _id = getId();
+         //   _id = unqueEntiyId++;
         }
 
         public abstract string ToPlayerString(int playerIdx);
@@ -22,9 +24,5 @@
 
         public int Id { get { return _id; } }
 
-		internal static void Reset()
-		{
-			unqueEntiyId = 0;
-		}
     }
 }

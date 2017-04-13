@@ -15,17 +15,25 @@ namespace HackathonWork
         private List<Bomb> _bombs;
         private List<Bomb> _newBombs;
         private List<Frame> _frames;
+        private int unqueEntiyId = 0;
+
 
         private Random _random;
 
 		public Referee(string[] players) : base(players)
 		{
-			Entity.Reset();
+			
 		}
 
 		public int Seed { get; set; }
         public int CustomFactoryCount { get; set; }
         public int CustomInitialUnitCount { get; set; }
+
+
+        internal int GetUniqueId()
+        {
+            return unqueEntiyId++;
+        }
 
         protected override void InitReferee(int playerCount)
         {
@@ -68,7 +76,7 @@ namespace HackathonWork
             Factory[] factories = new Factory[factoryCount];
 
             int i = 0;
-            factories[i++] = new Factory(null, Settings.Width / 2, Settings.Height / 2, 0, 0);
+            factories[i++] = new Factory(null, Settings.Width / 2, Settings.Height / 2, 0, 0, GetUniqueId);
             while (i < factoryCount - 1)
             {
                 int x = _random.Next(Settings.Width / 2 - 2 * Settings.FactoryRadius) + Settings.FactoryRadius + Settings.ExtraSpaceBetweenFactories;
@@ -99,14 +107,14 @@ namespace HackathonWork
                         {
                             unitCount = Settings.PlayerInitUnitsMin + _random.Next(Settings.PlayerInitUnitsMax - Settings.PlayerInitUnitsMin + 1);
                         }
-                        factories[i++] = new Factory(_players[0], x, y, unitCount, productionRate);
-                        factories[i++] = new Factory(_players[1], Settings.Width - x, Settings.Height - y, unitCount, productionRate);
+                        factories[i++] = new Factory(_players[0], x, y, unitCount, productionRate, GetUniqueId);
+                        factories[i++] = new Factory(_players[1], Settings.Width - x, Settings.Height - y, unitCount, productionRate, GetUniqueId);
                     }
                     else
                     {
                         int unitCount = _random.Next(5 * productionRate + 1);
-                        factories[i++] = new Factory(null, x, y, unitCount, productionRate);
-                        factories[i++] = new Factory(null, Settings.Width - x, Settings.Height - y, unitCount, productionRate);
+                        factories[i++] = new Factory(null, x, y, unitCount, productionRate, GetUniqueId);
+                        factories[i++] = new Factory(null, Settings.Width - x, Settings.Height - y, unitCount, productionRate, GetUniqueId);
                     }
                 }
             }
@@ -323,7 +331,7 @@ namespace HackathonWork
                 // send bombs
                 foreach (BombAction bombAction in player.LastBombActions)
                 {
-                    Bomb bomb = new Bomb(bombAction.Source, bombAction.Destination);
+                    Bomb bomb = new Bomb(bombAction.Source, bombAction.Destination, GetUniqueId);
                     if (player.RemainingBombs > 0 && bomb.FindWithSameRouteInList(_newBombs) == null) // todo hier check of niet 2 keer dezelfde actie gedaan wordt
                     {
                         _newBombs.Add(bomb);
@@ -337,7 +345,7 @@ namespace HackathonWork
                 foreach (MoveAction moveAction in player.LastMoveActions)
                 {
                     int unitsToMove = Math.Min(moveAction.Units, moveAction.Source.UnitCount);
-                    Troop troop = new Troop(moveAction.Source, moveAction.Destination, unitsToMove);
+                    Troop troop = new Troop(moveAction.Source, moveAction.Destination, unitsToMove, GetUniqueId);
                     if (unitsToMove >0 && troop.FindWithSameRouteInList(_newBombs) == null )
                     {
 						moveAction.Source.UnitCount -= unitsToMove;
