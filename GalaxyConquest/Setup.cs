@@ -17,6 +17,8 @@ namespace GalaxyConquest
 		public Setup()
 		{
 			InitializeComponent();
+            cbLevel.SelectedIndex = 0;
+            Leage.SelectedIndex = 0;
 		}
 
 		private void Setup_Load(object sender, EventArgs e)
@@ -32,8 +34,6 @@ namespace GalaxyConquest
 		private void button1_Click(object sender, EventArgs e)
 		{
 		
-
-
 			string filePath = textBox1.Text;
 
 			string[] players = new string[2];
@@ -53,34 +53,32 @@ namespace GalaxyConquest
 			{ index = 3; }
 
 			HackathonWork.Settings.SetLeageLevel(index);
-						
-			//Settings.Seed = 0;
-			//Settings.FactoryCount = 5;
-			//Settings.InitalUnitcount = 30;
+
+            //Settings.Seed = 0;
+            //Settings.FactoryCount = 5;
+            //Settings.InitalUnitcount = 30;
+           
 
 			HackathonWork.Settings.Timeout = -1;  
 
 			Referee referee = new Referee(players);
-
-			DebugBreak debugMethod = null;
-
-			if (chbxDebug.Checked)
+            DebugBreak debugMethod = null;
+            if (chbxDebug.Checked)
 			{
 				debugMethod = this.Debug;
 			}
-						
-			referee.PlayGame(debugMethod);
+            try
+            {
+                referee.PlayGame(debugMethod);
+            }
+            catch
+            {
+                // who throw the exception?
+            }
 
 			List<Frame> frames = referee.GetFrames();
-
 			Viewer v = new Viewer(frames);
 			v.Show();
-
-		}
-
-
-		private void label1_Click(object sender, EventArgs e)
-		{
 
 		}
 
@@ -98,5 +96,15 @@ namespace GalaxyConquest
 
 			}
 		}
-	}
+
+        private void rbtnBlue_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

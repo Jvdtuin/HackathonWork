@@ -32,6 +32,8 @@ namespace GalaxyConquest
             playerNames = new string[2];
             playerNames[0] = player1;
             playerNames[1] = player2;
+
+            trackBar1.Maximum = frames.Count-1;
 		}
 
 		private void Repaint()
@@ -106,7 +108,7 @@ namespace GalaxyConquest
 			string drawString = t.UnitCount.ToString();
 			if (showNumber)
 			{
-				g.FillRectangle(p.Brush, x, y, (int)(150 * _scaleFactor* drawString.Length), (int)(200  * _scaleFactor));
+				g.FillRectangle(p.Brush, x, y, (int)(200 * _scaleFactor* drawString.Length), (int)(250  * _scaleFactor));
 			}
 
 			rt--;
@@ -133,9 +135,9 @@ namespace GalaxyConquest
 
 		private void DrawBomb(Frame frame, Frame.BombInfo b)
 		{
-			Pen p = new Pen(Color.Black, (int)(10.0 * _scaleFactor));
+            
 
-			Frame.FactoryInfo sf = frame.Factories[b.SourceId];
+            Frame.FactoryInfo sf = frame.Factories[b.SourceId];
 			Frame.FactoryInfo df = frame.Factories[b.DestinationId];
 
 			int tt = b.TotalTurns;
@@ -157,7 +159,9 @@ namespace GalaxyConquest
 			int x = (int)(tx * _scaleFactor) + 100;
 			int y = (int)(ty * _scaleFactor) + 100;
 			int r = (int)(120 * _scaleFactor);
-			g.FillEllipse(p.Brush, x - r-1, y - r-1, 2 * r+2, 2 * r+2);
+
+            Brush br = new SolidBrush(Color.Black);
+            g.FillEllipse(br, x - r-1, y - r-1, 2 * r+2, 2 * r+2);
 			rt--;
 			pt++;
 			tx = (sf.X * rt + df.X * pt) / tt;
@@ -165,12 +169,13 @@ namespace GalaxyConquest
 
 			x = (int)(tx * _scaleFactor) + 100;
 			y = (int)(ty * _scaleFactor) + 100;
-
-			p.Color = Color.Yellow;
-
-			g.FillEllipse(p.Brush, x - r, y - r, 2 * r, 2 * r);
-			p.Color = GetColor(b.OwnerId);
-			g.DrawEllipse(p, x - r, y - r, 2 * r, 2 * r);
+            r = (int)(100 * _scaleFactor);
+           
+            Pen p = new Pen(GetColor(b.OwnerId), (int)(50.0 * _scaleFactor));
+            g.DrawEllipse(p, x - r, y - r, 2 * r, 2 * r);
+            br = new SolidBrush(Color.Yellow);
+            g.FillEllipse(br, x - r, y - r, 2 * r, 2 * r);
+			
 		}
 
 
@@ -281,6 +286,7 @@ namespace GalaxyConquest
 				if (_currentFrame < _frames.Count - 1)
 				{
 					_currentFrame++;
+                    trackBar1.Value = _currentFrame;
 					DrawMap();  			                  
 				}
 				else
@@ -351,6 +357,12 @@ namespace GalaxyConquest
                 timer1.Start();
                 button1.Text = "||";
             }
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            _currentFrame = trackBar1.Value;
+            Repaint();
         }
     }
 }

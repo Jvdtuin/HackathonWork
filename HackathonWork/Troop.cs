@@ -6,7 +6,7 @@ namespace HackathonWork
     {
         public int UnitCount { get; set; } 
 
-        public Troop( Factory source, Factory destination, int unitCount) : base(EntityType.TROOP, source, destination)
+        public Troop( Factory source, Factory destination, int unitCount, GetId getId) : base(EntityType.TROOP, source, destination, getId)
         {
             UnitCount = unitCount;
         }

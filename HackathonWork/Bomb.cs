@@ -4,7 +4,7 @@ namespace HackathonWork
 {
     internal class Bomb : MovingEntity
     {
-        public Bomb( Factory source, Factory destination) : base(EntityType.BOMB, source, destination)
+        public Bomb( Factory source, Factory destination, GetId getId) : base(EntityType.BOMB, source, destination, getId)
         {
         }
 
