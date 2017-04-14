@@ -58,6 +58,7 @@
     <Compile Include="IncAction.cs" />
     <Compile Include="InvalidInputException.cs" />
     <Compile Include="LostException.cs" />
+    <Compile Include="MatchData.cs" />
     <Compile Include="MoveAction.cs" />
     <Compile Include="MovingEntity.cs" />
     <Compile Include="MultiReferee.cs" />

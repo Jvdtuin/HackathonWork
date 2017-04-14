@@ -31,42 +31,42 @@ namespace GalaxyConquest
 			MessageBox.Show("You can attach your debugger now");
 		}
 
-		private void button1_Click(object sender, EventArgs e)
-		{
-		
-			string filePath = textBox1.Text;
+        private void button1_Click(object sender, EventArgs e)
+        {
 
-			string[] players = new string[2];
-			if (rbtnBlue.Checked)
-			{
-				players[0] = filePath;
-				players[1] = "ConsoleApplication1.exe";
-			}
-			else
-			{
-				players[1] = filePath;
-				players[0] = "ConsoleApplication1.exe";
-			}
+            string filePath = textBox1.Text;
 
-			int index = Leage.SelectedIndex;
-			if (index == 2)
-			{ index = 3; }
+            string[] players = new string[2];
+            if (rbtnBlue.Checked)
+            {
+                players[0] = filePath;
+                players[1] = "ConsoleApplication1.exe";
+            }
+            else
+            {
+                players[1] = filePath;
+                players[0] = "ConsoleApplication1.exe";
+            }
 
-			HackathonWork.Settings.SetLeageLevel(index);
+            int index = Leage.SelectedIndex;
+            if (index == 2)
+            { index = 3; }
+
+            HackathonWork.Settings.SetLeageLevel(index);
 
             //Settings.Seed = 0;
             //Settings.FactoryCount = 5;
             //Settings.InitalUnitcount = 30;
-           
 
-			HackathonWork.Settings.Timeout = -1;  
 
-			Referee referee = new Referee(players);
+            HackathonWork.Settings.Timeout = -1;
+
+            Referee referee = new Referee(players);
             DebugBreak debugMethod = null;
             if (chbxDebug.Checked)
-			{
-				debugMethod = this.Debug;
-			}
+            {
+                debugMethod = this.Debug;
+            }
             try
             {
                 referee.PlayGame(debugMethod);
@@ -76,8 +76,14 @@ namespace GalaxyConquest
                 // who throw the exception?
             }
 
-			List<Frame> frames = referee.GetFrames();
-			Viewer v = new Viewer(frames);
+            List<Frame> frames = referee.GetFrames();
+            MatchData md = new MatchData()
+            {
+                Frames = frames,
+                PlayerNames = new[] { "The danger", "victory first" }
+            };
+
+			Viewer v = new Viewer(md);
 			v.Show();
 
 		}

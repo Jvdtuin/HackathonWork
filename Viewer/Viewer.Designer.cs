@@ -33,7 +33,14 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.ScorePlayer1 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ScorePlayer2 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.Winner = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer1
@@ -44,7 +51,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(12, 550);
+            this.button1.Location = new System.Drawing.Point(12, 596);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(31, 22);
             this.button1.TabIndex = 2;
@@ -55,7 +62,7 @@
             // textBox2
             // 
             this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox2.Location = new System.Drawing.Point(49, 552);
+            this.textBox2.Location = new System.Drawing.Point(49, 598);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(72, 20);
             this.textBox2.TabIndex = 4;
@@ -64,30 +71,112 @@
             // 
             this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.trackBar1.Location = new System.Drawing.Point(127, 550);
+            this.trackBar1.BackColor = System.Drawing.Color.Black;
+            this.trackBar1.Location = new System.Drawing.Point(127, 596);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(922, 45);
+            this.trackBar1.Size = new System.Drawing.Size(1036, 45);
             this.trackBar1.TabIndex = 5;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            // 
+            // ScorePlayer1
+            // 
+            this.ScorePlayer1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScorePlayer1.AutoSize = true;
+            this.ScorePlayer1.Font = new System.Drawing.Font("Arial Narrow", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScorePlayer1.ForeColor = System.Drawing.Color.Blue;
+            this.ScorePlayer1.Location = new System.Drawing.Point(410, 0);
+            this.ScorePlayer1.Name = "ScorePlayer1";
+            this.ScorePlayer1.Size = new System.Drawing.Size(165, 57);
+            this.ScorePlayer1.TabIndex = 6;
+            this.ScorePlayer1.Text = "Player1";
+            this.ScorePlayer1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.ScorePlayer1.Click += new System.EventHandler(this.ScorePlayer1_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.ScorePlayer2, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ScorePlayer1, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1176, 61);
+            this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // ScorePlayer2
+            // 
+            this.ScorePlayer2.AutoSize = true;
+            this.ScorePlayer2.Font = new System.Drawing.Font("Arial Narrow", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScorePlayer2.ForeColor = System.Drawing.Color.Red;
+            this.ScorePlayer2.Location = new System.Drawing.Point(601, 0);
+            this.ScorePlayer2.Name = "ScorePlayer2";
+            this.ScorePlayer2.Size = new System.Drawing.Size(165, 57);
+            this.ScorePlayer2.TabIndex = 7;
+            this.ScorePlayer2.Text = "Player2";
+            this.ScorePlayer2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.Winner, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 239);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1151, 204);
+            this.tableLayoutPanel2.TabIndex = 8;
+            this.tableLayoutPanel2.Visible = false;
+            // 
+            // Winner
+            // 
+            this.Winner.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Winner.AutoSize = true;
+            this.Winner.Font = new System.Drawing.Font("Microsoft Sans Serif", 100F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Winner.ForeColor = System.Drawing.Color.White;
+            this.Winner.Location = new System.Drawing.Point(3, 0);
+            this.Winner.Name = "Winner";
+            this.Winner.Size = new System.Drawing.Size(1145, 204);
+            this.Winner.TabIndex = 0;
+            this.Winner.Text = "label1";
+            this.Winner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Winner.Click += new System.EventHandler(this.Winner_Click);
             // 
             // Viewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1061, 599);
+            this.ClientSize = new System.Drawing.Size(1175, 645);
+            this.Controls.Add(this.tableLayoutPanel2);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button1);
             this.Name = "Viewer";
             this.Text = "Viewer";
             this.Activated += new System.EventHandler(this.Viewer_Activated);
-            this.Load += new System.EventHandler(this.t);
             this.Shown += new System.EventHandler(this.Viewer_Shown);
-            this.Click += new System.EventHandler(this.Viewer_Click);
             this.Resize += new System.EventHandler(this.Viewer_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,5 +188,10 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label ScorePlayer1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label ScorePlayer2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label Winner;
     }
 }
