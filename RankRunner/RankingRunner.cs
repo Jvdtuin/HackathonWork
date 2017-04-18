@@ -1,4 +1,5 @@
-﻿using HackathonWork;
+﻿using GalaxyConquest;
+using HackathonWork;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +36,7 @@ namespace RankRunner
 
 
         private List<Team> _teams;
+        private static Random _random = new Random(0); 
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -73,8 +75,15 @@ namespace RankRunner
         private void button3_Click(object sender, EventArgs e)
         {
             // create battle schedule    
+            List<Battle> battles = CreateBattles();
 
             // run the battles
+            foreach (Battle b in battles)
+            {
+                Runbattle(b);
+            }
+            //Parallel.ForEach(battles, b => { Runbattle(b); });
+            
         }
 
 
@@ -85,7 +94,7 @@ namespace RankRunner
             players[1] = battle.Team2.Application;
 
             Referee referee = new Referee(players);
-
+            
             referee.Seed = battle.Seed;
 
             referee.PlayGame(null);
@@ -131,5 +140,58 @@ namespace RankRunner
         }
 
        
+        private List<Battle> CreateBattles()
+        {
+            int[] seeds = new int[10];
+            for (int i=0; i<10;i++)
+            {
+                seeds[i] = _random.Next(int.MaxValue);
+            }
+                      
+
+            List<Battle> battles = new List<Battle>();
+            foreach(Team team1 in _teams)
+            {
+                foreach(Team team2 in _teams)
+                {
+                    if (team1 != team2)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Battle battle = new Battle()
+                            {
+                                Team1 = team1,
+                                Team2 = team2,
+                                Seed = seeds[i],
+
+                            };
+                            battles.Add(battle);
+                        }
+                    }
+                }
+            }
+            foreach (Battle battle in battles)
+            {
+                Matches.Items.Add(battle);
+            }
+            return battles;
+        }
+
+        private void Matches_DoubleClick(object sender, EventArgs e)
+        {
+            Battle b = (Battle)Matches.SelectedItem;
+
+            MatchData md = new MatchData()
+            {
+                Frames = b.Replay,
+                PlayerNames = new[] { b.Team1.Name, b.Team2.Name },
+
+
+
+            };
+
+            Viewer viewer = new Viewer(md);
+            viewer.ShowDialog();
+        }
     }
 }

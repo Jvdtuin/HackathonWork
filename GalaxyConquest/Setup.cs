@@ -68,14 +68,20 @@ namespace GalaxyConquest
 
             HackathonWork.Settings.SetLeageLevel(index);
 
+
             //Settings.Seed = 0;
             //Settings.FactoryCount = 5;
             //Settings.InitalUnitcount = 30;
 
-
-            HackathonWork.Settings.Timeout = -1;
-
             Referee referee = new Referee(players);
+            HackathonWork.Settings.Timeout = -1;
+            int seed;
+            if (int.TryParse(SeedTb.Text, out seed))
+            {
+                referee.Seed = seed;
+            }
+
+            
             DebugBreak debugMethod = null;
             if (chbxDebug.Checked)
             {

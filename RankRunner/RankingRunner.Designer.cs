@@ -55,6 +55,7 @@
             this.Matches.Name = "Matches";
             this.Matches.Size = new System.Drawing.Size(664, 472);
             this.Matches.TabIndex = 1;
+            this.Matches.DoubleClick += new System.EventHandler(this.Matches_DoubleClick);
             // 
             // ApplicationTb
             // 

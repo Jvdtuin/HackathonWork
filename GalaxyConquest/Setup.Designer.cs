@@ -40,6 +40,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.Leage = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.SeedTb = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -157,11 +159,29 @@
             this.label4.TabIndex = 13;
             this.label4.Text = "Rules";
             // 
+            // SeedTb
+            // 
+            this.SeedTb.Location = new System.Drawing.Point(47, 136);
+            this.SeedTb.Name = "SeedTb";
+            this.SeedTb.Size = new System.Drawing.Size(100, 20);
+            this.SeedTb.TabIndex = 14;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 138);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(32, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Seed";
+            // 
             // Setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(602, 170);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.SeedTb);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Leage);
             this.Controls.Add(this.label3);
@@ -195,6 +215,8 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox Leage;
 		private System.Windows.Forms.Label label4;
-	}
+        private System.Windows.Forms.TextBox SeedTb;
+        private System.Windows.Forms.Label label2;
+    }
 }
 
