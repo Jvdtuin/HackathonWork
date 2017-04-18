@@ -20,6 +20,11 @@ namespace HackathonWork
 
         private Random _random;
 
+
+        /// <summary>
+        /// initiates a new referee
+        /// </summary>
+        /// <param name="players">the two console application to battle</param>
 		public Referee(string[] players) : base(players)
 		{
 			

@@ -125,18 +125,16 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.Winner, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 239);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 253);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1151, 204);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1151, 155);
             this.tableLayoutPanel2.TabIndex = 8;
             this.tableLayoutPanel2.Visible = false;
             // 
@@ -146,11 +144,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Winner.AutoSize = true;
+            this.Winner.BackColor = System.Drawing.Color.Transparent;
             this.Winner.Font = new System.Drawing.Font("Microsoft Sans Serif", 100F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Winner.ForeColor = System.Drawing.Color.White;
             this.Winner.Location = new System.Drawing.Point(3, 0);
             this.Winner.Name = "Winner";
-            this.Winner.Size = new System.Drawing.Size(1145, 204);
+            this.Winner.Size = new System.Drawing.Size(1145, 155);
             this.Winner.TabIndex = 0;
             this.Winner.Text = "label1";
             this.Winner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -169,6 +168,7 @@
             this.Controls.Add(this.button1);
             this.Name = "Viewer";
             this.Text = "Viewer";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Activated += new System.EventHandler(this.Viewer_Activated);
             this.Shown += new System.EventHandler(this.Viewer_Shown);
             this.Resize += new System.EventHandler(this.Viewer_Resize);

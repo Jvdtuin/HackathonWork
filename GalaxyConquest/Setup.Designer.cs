@@ -98,7 +98,6 @@
             this.rbtnRed.TabIndex = 8;
             this.rbtnRed.Text = "Team red";
             this.rbtnRed.UseVisualStyleBackColor = true;
-            this.rbtnRed.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
             // rbtnBlue
             // 
@@ -111,7 +110,6 @@
             this.rbtnBlue.TabStop = true;
             this.rbtnBlue.Text = "Team blue";
             this.rbtnBlue.UseVisualStyleBackColor = true;
-            this.rbtnBlue.CheckedChanged += new System.EventHandler(this.rbtnBlue_CheckedChanged);
             // 
             // openFileDialog1
             // 
@@ -128,7 +126,6 @@
             this.cbLevel.Name = "cbLevel";
             this.cbLevel.Size = new System.Drawing.Size(121, 21);
             this.cbLevel.TabIndex = 10;
-            this.cbLevel.SelectedIndexChanged += new System.EventHandler(this.cbLevel_SelectedIndexChanged);
             // 
             // label3
             // 

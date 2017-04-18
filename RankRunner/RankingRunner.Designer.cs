@@ -28,15 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
-
             this.Compettitors = new System.Windows.Forms.ListBox();
             this.Matches = new System.Windows.Forms.ListBox();
             this.ApplicationTb = new System.Windows.Forms.TextBox();
             this.TeamNameTb = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.browse = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -74,14 +70,15 @@
             this.TeamNameTb.Size = new System.Drawing.Size(307, 20);
             this.TeamNameTb.TabIndex = 2;
             // 
-            // button1
+            // browse
             // 
-            this.button1.Location = new System.Drawing.Point(358, 91);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(35, 20);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.browse.Location = new System.Drawing.Point(358, 91);
+            this.browse.Name = "browse";
+            this.browse.Size = new System.Drawing.Size(35, 20);
+            this.browse.TabIndex = 3;
+            this.browse.Text = "...";
+            this.browse.UseVisualStyleBackColor = true;
+            this.browse.Click += new System.EventHandler(this.button1_Click);
             // 
             // openFileDialog1
             // 
@@ -127,19 +124,20 @@
             // 
             // RankingRunner
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 508);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.browse);
             this.Controls.Add(this.TeamNameTb);
             this.Controls.Add(this.ApplicationTb);
             this.Controls.Add(this.Matches);
             this.Controls.Add(this.Compettitors);
             this.Name = "RankingRunner";
             this.Text = "Ranking runner";
-            this.Load += new System.EventHandler(this.RankingRunner_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
