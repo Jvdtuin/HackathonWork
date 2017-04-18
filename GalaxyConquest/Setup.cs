@@ -3,6 +3,7 @@ using HackathonWork;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -36,16 +37,29 @@ namespace GalaxyConquest
 
             string filePath = textBox1.Text;
 
+            string opponentAI = "";
+            switch ( cbLevel.SelectedIndex)
+            {
+                case 0: opponentAI = ConfigurationManager.AppSettings["AI0"]; break;
+                case 1: opponentAI = ConfigurationManager.AppSettings["AI1"]; break;
+                case 2: opponentAI = ConfigurationManager.AppSettings["AI2"]; break;                         
+            }
+
+            string[] playerNames = new string[2];
             string[] players = new string[2];
             if (rbtnBlue.Checked)
             {
                 players[0] = filePath;
-                players[1] = "ConsoleApplication1.exe";
+                playerNames[0] = "User application";
+                players[1] = opponentAI;
+                playerNames[1] = "Boss program";
             }
             else
             {
                 players[1] = filePath;
-                players[0] = "ConsoleApplication1.exe";
+                playerNames[1] = "User application";
+                players[0] = opponentAI;
+                playerNames[0] = "Boss program";
             }
 
             int index = Leage.SelectedIndex;
@@ -54,14 +68,20 @@ namespace GalaxyConquest
 
             HackathonWork.Settings.SetLeageLevel(index);
 
+
             //Settings.Seed = 0;
             //Settings.FactoryCount = 5;
             //Settings.InitalUnitcount = 30;
 
-
-            HackathonWork.Settings.Timeout = -1;
-
             Referee referee = new Referee(players);
+            HackathonWork.Settings.Timeout = -1;
+            int seed;
+            if (int.TryParse(SeedTb.Text, out seed))
+            {
+                referee.Seed = seed;
+            }
+
+            
             DebugBreak debugMethod = null;
             if (chbxDebug.Checked)
             {
@@ -71,25 +91,21 @@ namespace GalaxyConquest
             {
                 referee.PlayGame(debugMethod);
             }
-            catch
+            catch (Exception ex)
             {
                 // who throw the exception?
             }
 
             List<Frame> frames = referee.GetFrames();
+            
             MatchData md = new MatchData()
             {
                 Frames = frames,
-                PlayerNames = new[] { "The danger", "victory first" }
+                PlayerNames = playerNames,
             };
 
 			Viewer v = new Viewer(md);
 			v.Show();
-
-		}
-
-		private void radioButton2_CheckedChanged(object sender, EventArgs e)
-		{
 
 		}
 
@@ -102,15 +118,5 @@ namespace GalaxyConquest
 
 			}
 		}
-
-        private void rbtnBlue_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cbLevel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

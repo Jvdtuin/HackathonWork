@@ -16,10 +16,12 @@ namespace GalaxyConquest
         private List<Frame> _frames;
 
         private double _scaleFactor;
+        private int _topCorrection = 100;
+        private int _leftCorrection = 100;
         private int _currentFrame = 0;
         private int _tickCounter = 0;
         private string[] playerNames;
-
+        private bool initialized = false;
         private Graphics g;
 
         public Viewer(MatchData matchData)//   List<Frame> frames, string player1 = "Player1", string player2 = "player2")
@@ -33,14 +35,17 @@ namespace GalaxyConquest
             playerNames = matchData.PlayerNames;
 
             trackBar1.Maximum = _frames.Count - 1;
+            initialized = true;
         }
 
         private void Repaint()
         {
-            g = CreateGraphics();
-            g.Clear(Color.Black);
-            DrawMap();
-
+            if (initialized)
+            {
+                g = CreateGraphics();
+                g.Clear(Color.Black);
+                DrawMap();
+            }
         }
 
         private void Viewer_Resize(object sender, EventArgs e)
@@ -58,6 +63,8 @@ namespace GalaxyConquest
             double delta = Math.Min(dh, dw);
             _scaleFactor = delta;
 
+            _topCorrection =  ((this.Height - 200)- (int)(Settings.Height * _scaleFactor)) / 2 +100;
+            _leftCorrection = ((this.Width - 200) - (int)(Settings.Width * _scaleFactor)) / 2 + 100;
             // g.Clear(Color.Black);
 
             foreach (Frame.FactoryInfo f in frame.Factories)
@@ -100,8 +107,8 @@ namespace GalaxyConquest
             double tx = (sf.X * rt + df.X * pt) / tt;
             double ty = (sf.Y * rt + df.Y * pt) / tt;
 
-            int x = (int)(tx * _scaleFactor) + 100;
-            int y = (int)(ty * _scaleFactor) + 100;
+            int x = (int)(tx * _scaleFactor) + _leftCorrection;
+            int y = (int)(ty * _scaleFactor) + _topCorrection;
             int r = (int)(120 * _scaleFactor);
             g.FillEllipse(p.Brush, x - r, y - r, 2 * r, 2 * r);
             string drawString = t.UnitCount.ToString();
@@ -115,8 +122,8 @@ namespace GalaxyConquest
             tx = (sf.X * rt + df.X * pt) / tt;
             ty = (sf.Y * rt + df.Y * pt) / tt;
 
-            x = (int)(tx * _scaleFactor) + 100;
-            y = (int)(ty * _scaleFactor) + 100;
+            x = (int)(tx * _scaleFactor) + _leftCorrection;
+            y = (int)(ty * _scaleFactor) + _topCorrection;
             r = (int)(100 * _scaleFactor);
             p.Color = GetColor(t.OwnerId);
 
@@ -153,8 +160,8 @@ namespace GalaxyConquest
             double tx = (sf.X * rt + df.X * pt) / tt;
             double ty = (sf.Y * rt + df.Y * pt) / tt;
 
-            int x = (int)(tx * _scaleFactor) + 100;
-            int y = (int)(ty * _scaleFactor) + 100;
+            int x = (int)(tx * _scaleFactor) + _leftCorrection;
+            int y = (int)(ty * _scaleFactor) + _topCorrection;
             int r = (int)(120 * _scaleFactor);
 
             Brush br = new SolidBrush(Color.Black);
@@ -164,8 +171,8 @@ namespace GalaxyConquest
             tx = (sf.X * rt + df.X * pt) / tt;
             ty = (sf.Y * rt + df.Y * pt) / tt;
 
-            x = (int)(tx * _scaleFactor) + 100;
-            y = (int)(ty * _scaleFactor) + 100;
+            x = (int)(tx * _scaleFactor) + _leftCorrection;
+            y = (int)(ty * _scaleFactor) + _topCorrection;
             r = (int)(100 * _scaleFactor);
 
             Pen p = new Pen(GetColor(b.OwnerId), (int)(50.0 * _scaleFactor));
@@ -179,8 +186,8 @@ namespace GalaxyConquest
 
         private void DrawFactory(Frame.FactoryInfo factory)
         {
-            int x = (int)(factory.X * _scaleFactor) + 100;
-            int y = (int)(factory.Y * _scaleFactor) + 100;
+            int x = (int)(factory.X * _scaleFactor) + _leftCorrection;
+            int y = (int)(factory.Y * _scaleFactor) + _topCorrection;
             int r = (int)(1000.0 * _scaleFactor);
             int pr = (int)(150.0 * _scaleFactor);
             int pd = (int)(350.0 * _scaleFactor);

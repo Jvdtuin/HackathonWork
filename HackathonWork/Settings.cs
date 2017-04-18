@@ -62,71 +62,40 @@ namespace HackathonWork
 
 		public static int? CustomInitialUnitCount { get; internal set; }
 
-		private static int? _seed = null;
-		public static int Seed
-		{
-			get
-			{
-				if (_seed.HasValue)
-				{
-					return _seed.Value;
-				}
-				return (int)(DateTime.Now.Ticks % (int.MaxValue - 1));
-			}
-			set
-			{
-				_seed = value;
-			}
-		}
+		//private static int? _seed = null;
+		//public static int Seed
+		//{
+		//	get
+		//	{
+		//		if (_seed.HasValue)
+		//		{
+		//			return _seed.Value;
+		//		}
+		//		return (int)(DateTime.Now.Ticks % (int.MaxValue - 1));
+		//	}
+		//	set
+		//	{
+		//		_seed = value;
+		//	}
+		//}
 
-		private static int? _factoryCount = null;
-		public static int FactoryCount
-		{
-			get
-			{
-				if (_factoryCount.HasValue)
-				{
-					return _factoryCount.Value;
-				}
-				int f = MinFactoryCount + Random.Next(MaxFactoryCount - MinFactoryCount + 1);
-				return f;
-			}
-			set
-			{
-				_factoryCount = value;
-			}
-		}
 
-		private static Random _random = null;
-		public static Random Random
-		{
-			get
-			{
-				if (_random == null)
-				{
-					_random = new Random(Seed);
-				}
-				return _random;
-			}
 
-		}
+		//private static Random _random = null;
+		//public static Random Random
+		//{
+		//	get
+		//	{
+		//		if (_random == null)
+		//		{
+		//			_random = new Random(Seed);
+		//		}
+		//		return _random;
+		//	}
 
-		private static int? _initalUnitcount = null;
-		public static int InitalUnitcount
-		{
-			get
-			{
-				if (_initalUnitcount.HasValue)
-				{
-					return _initalUnitcount.Value;
-				}
-				return PlayerInitUnitsMin + Random.Next(PlayerInitUnitsMax - PlayerInitUnitsMin + 1);
-			}
-			set
-			{
-				_initalUnitcount = value;
-			}
-		}
+		//}
+
+
 
 		public const char ActionSplittingChar = ';';
        

@@ -20,12 +20,17 @@ namespace HackathonWork
 
         private Random _random;
 
+
+        /// <summary>
+        /// initiates a new referee
+        /// </summary>
+        /// <param name="players">the two console application to battle</param>
 		public Referee(string[] players) : base(players)
 		{
 			
 		}
 
-		public int Seed { get; set; }
+		public int? Seed { get; set; }
         public int CustomFactoryCount { get; set; }
         public int CustomInitialUnitCount { get; set; }
 
@@ -35,15 +40,51 @@ namespace HackathonWork
             return unqueEntiyId++;
         }
 
+        private  int? _factoryCount = null;
+        public  int FactoryCount
+        {
+            get
+            {
+                if (_factoryCount.HasValue)
+                {
+                    return _factoryCount.Value;
+                }
+                int f = Settings.MinFactoryCount + _random.Next(Settings.MaxFactoryCount - Settings.MinFactoryCount + 1);
+                return f;
+            }
+            set
+            {
+                _factoryCount = value;
+            }
+        }
+
+        private  int? _initalUnitcount = null;
+        public  int InitalUnitcount
+        {
+            get
+            {
+                if (_initalUnitcount.HasValue)
+                {
+                    return _initalUnitcount.Value;
+                }
+                return Settings.PlayerInitUnitsMin + _random.Next(Settings.PlayerInitUnitsMax - Settings.PlayerInitUnitsMin + 1);
+            }
+            set
+            {
+                _initalUnitcount = value;
+            }
+        }
+
         protected override void InitReferee(int playerCount)
         {
-            
+            _random = Seed.HasValue ? new Random(Seed.Value) : new Random();
 
-            int factoryCount = Settings.FactoryCount;
-            int InitUnitCount = Settings.InitalUnitcount;
+            int factoryCount = FactoryCount;
+            int InitUnitCount = InitalUnitcount;
             _newTroops = new List<Troop>();
             _newBombs = new List<Bomb>();
-			_random = Settings.Random;
+
+            
 
             _players = GeneratePlayers(playerCount);
             _factories = GenerateFactories(factoryCount, playerCount);
