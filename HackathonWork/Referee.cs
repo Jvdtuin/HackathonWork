@@ -78,17 +78,12 @@ namespace HackathonWork
         protected override void InitReferee(int playerCount)
         {
             _random = Seed.HasValue ? new Random(Seed.Value) : new Random();
-
             int factoryCount = FactoryCount;
             int InitUnitCount = InitalUnitcount;
             _newTroops = new List<Troop>();
             _newBombs = new List<Bomb>();
-
-            
-
             _players = GeneratePlayers(playerCount);
             _factories = GenerateFactories(factoryCount, playerCount);
-
             _troops = new List<Troop>();
             _bombs = new List<Bomb>();
             _frames = new List<Frame>();
