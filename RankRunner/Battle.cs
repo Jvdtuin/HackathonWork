@@ -44,7 +44,7 @@ namespace RankRunner
         {
             if (winner.HasValue)
             {
-                return $"{Team1} ({Score1})-({Score2}) {Team2}";
+                return $"{Team1} ({Score1})-({Score2}) {Team2}  seed {Seed}";
             }
             return $"{Team1} - {Team2}";
         }

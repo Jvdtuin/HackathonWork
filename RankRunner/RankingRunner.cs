@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,7 +37,7 @@ namespace RankRunner
 
 
         private List<Team> _teams;
-        private static Random _random = new Random(0); 
+        private Random _random = new Random(0);
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -81,20 +82,26 @@ namespace RankRunner
             foreach (Battle b in battles)
             {
                 Runbattle(b);
+             //   Thread.Sleep(5000);
             }
             //Parallel.ForEach(battles, b => { Runbattle(b); });
-            
+            Matches.Items.Clear();
+            foreach (Battle b in battles)
+            {
+                Matches.Items.Add(b);
+            }
         }
 
 
-        private void Runbattle (Battle battle)
+
+
+        private void Runbattle(Battle battle)
         {
             string[] players = new string[2];
             players[0] = battle.Team1.Application;
             players[1] = battle.Team2.Application;
 
             Referee referee = new Referee(players);
-            
             referee.Seed = battle.Seed;
 
             referee.PlayGame(null);
@@ -134,25 +141,23 @@ namespace RankRunner
                     {
                         battle.Points2 = 2;
                     }
-                }               
-            }      
-             
+                }
+            }
+
         }
 
-       
+
         private List<Battle> CreateBattles()
         {
             int[] seeds = new int[10];
-            for (int i=0; i<10;i++)
+            for (int i = 0; i < 10; i++)
             {
                 seeds[i] = _random.Next(int.MaxValue);
             }
-                      
-
             List<Battle> battles = new List<Battle>();
-            foreach(Team team1 in _teams)
+            foreach (Team team1 in _teams)
             {
-                foreach(Team team2 in _teams)
+                foreach (Team team2 in _teams)
                 {
                     if (team1 != team2)
                     {
@@ -163,17 +168,16 @@ namespace RankRunner
                                 Team1 = team1,
                                 Team2 = team2,
                                 Seed = seeds[i],
-
                             };
                             battles.Add(battle);
                         }
                     }
                 }
             }
-            foreach (Battle battle in battles)
-            {
-                Matches.Items.Add(battle);
-            }
+           // foreach (Battle battle in battles)
+           // {
+           //     Matches.Items.Add(battle);
+           // }
             return battles;
         }
 
@@ -192,6 +196,11 @@ namespace RankRunner
 
             Viewer viewer = new Viewer(md);
             viewer.ShowDialog();
+        }
+
+        private void Matches_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

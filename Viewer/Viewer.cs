@@ -27,7 +27,7 @@ namespace GalaxyConquest
         public Viewer(MatchData matchData)//   List<Frame> frames, string player1 = "Player1", string player2 = "player2")
         {
             InitializeComponent();
-                      
+
             _frames = matchData.Frames;
             g = CreateGraphics();
             g.Clear(Color.Black);
@@ -63,7 +63,7 @@ namespace GalaxyConquest
             double delta = Math.Min(dh, dw);
             _scaleFactor = delta;
 
-            _topCorrection =  ((this.Height - 200)- (int)(Settings.Height * _scaleFactor)) / 2 +100;
+            _topCorrection = ((this.Height - 200) - (int)(Settings.Height * _scaleFactor)) / 2 + 100;
             _leftCorrection = ((this.Width - 200) - (int)(Settings.Width * _scaleFactor)) / 2 + 100;
             // g.Clear(Color.Black);
 
@@ -87,6 +87,7 @@ namespace GalaxyConquest
 
         private void DrawTroop(Frame frame, Frame.TroopInfo t, bool showNumber)
         {
+
             Pen p = new Pen(Color.Black, (int)(10.0 * _scaleFactor));
             Frame.FactoryInfo sf = frame.Factories[t.SourceId];
             Frame.FactoryInfo df = frame.Factories[t.DestinationId];
@@ -136,6 +137,7 @@ namespace GalaxyConquest
                 Font drawFond = new Font("Arial", (int)(150 * _scaleFactor));
                 g.DrawString(drawString, drawFond, brush, x, y);
             }
+
         }
 
 
@@ -181,8 +183,6 @@ namespace GalaxyConquest
             g.FillEllipse(br, x - r, y - r, 2 * r, 2 * r);
 
         }
-
-
 
         private void DrawFactory(Frame.FactoryInfo factory)
         {
@@ -358,6 +358,11 @@ namespace GalaxyConquest
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
             textBox2.Text = $"{_currentFrame} of {_frames.Count}";
+        }
+
+        private void Viewer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer1.Stop();
         }
     }
 }

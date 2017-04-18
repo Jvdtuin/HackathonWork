@@ -5,7 +5,7 @@ namespace HackathonWork
 {
 	public class Settings
 	{
-		public static int Timeout { get; set; } = 100;
+		public static int Timeout { get; set; } = -1;
 
 		internal static int LeagueLevel = 3;
 		internal const int MinFactoryCount = 7;

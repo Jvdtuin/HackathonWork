@@ -74,7 +74,7 @@ namespace HackathonWork
 			 
 		}
 
-		private static void WriteLine(Process process, string line)
+		private void WriteLine(Process process, string line)
 		{
 			process.StandardInput.WriteLine(line);
 		}
