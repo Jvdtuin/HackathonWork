@@ -1,6 +1,7 @@
 ﻿using GalaxyConquest.Properties;
 using HackathonWork;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -15,6 +16,8 @@ namespace GalaxyConquest
 {
 	public partial class Setup : Form
 	{
+
+
 		public Setup()
 		{
 			InitializeComponent();
@@ -32,9 +35,12 @@ namespace GalaxyConquest
 			MessageBox.Show("You can attach your debugger now");
 		}
 
+        private List<Frame> _frames;
+        private ConcurrentQueue<ConsoleOutputEventArgs> _outputEvents;
+
         private void button1_Click(object sender, EventArgs e)
         {
-
+            _outputEvents = new ConcurrentQueue<ConsoleOutputEventArgs>();
             string filePath = textBox1.Text;
 
             string opponentAI = "";
@@ -68,13 +74,9 @@ namespace GalaxyConquest
 
             HackathonWork.Settings.SetLeageLevel(index);
 
-
-            //Settings.Seed = 0;
-            //Settings.FactoryCount = 5;
-            //Settings.InitalUnitcount = 30;
-
             Referee referee = new Referee(players);
-            HackathonWork.Settings.Timeout = -1;
+            HackathonWork.Settings.UseTimeOut = false;
+            HackathonWork.Settings.Timeout = 100;
             int seed;
             if (int.TryParse(SeedTb.Text, out seed))
             {
@@ -89,6 +91,16 @@ namespace GalaxyConquest
             }
             try
             {
+                if (rbtnBlue.Checked)
+                {
+                    referee.ConsoleErrorOutputPlayer1 += ConsoleErrorOutputPlayer;
+                }
+                else
+                {
+                    referee.ConsoleErrorOutputPlayer2 += ConsoleErrorOutputPlayer;
+                }
+                referee.ConsoleOutputPlayer += ConsoleErrorOutputPlayer;
+
                 referee.PlayGame(debugMethod);
             }
             catch (Exception ex)
@@ -96,26 +108,51 @@ namespace GalaxyConquest
                 // who throw the exception?
             }
 
-            List<Frame> frames = referee.GetFrames();
-            
+            _frames = referee.GetFrames();
+
+           
             MatchData md = new MatchData()
             {
-                Frames = frames,
+                Frames = _frames,
                 PlayerNames = playerNames,
             };
 
 			Viewer v = new Viewer(md);
 			v.Show();
-
+            
+            PrintConsoleOUtput();
 		}
 
-		private void browse_Click(object sender, EventArgs e)
+        private void PrintConsoleOUtput()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(ConsoleOutputEventArgs e in _outputEvents.ToArray())
+            {
+                if (e.Error)
+                {
+                    sb.Append("DEBUG OUTPUT: ");
+                }
+                else
+                {
+                    sb.Append($"COMMAND {(e.Player == 0 ? "BLUE" : "RED")}: ");
+                }
+                sb.AppendLine(e.Line);
+            }
+            richTextBox1.Text = sb.ToString();
+            
+        }
+
+        private void ConsoleErrorOutputPlayer(object sender, ConsoleOutputEventArgs e)
+        {
+            _outputEvents.Enqueue(e);             
+        }
+
+        private void browse_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.FileName = "Player.exe";
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				textBox1.Text = openFileDialog1.FileName;
-
 			}
 		}
     }
