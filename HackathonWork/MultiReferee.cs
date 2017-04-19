@@ -56,7 +56,7 @@ namespace HackathonWork
 			return result;
 		}
 
-		private string ReadLine(Process process)
+		private string ReadLine(Process process, int? timeOut)
 		{
 			string result = null;
 			Stopwatch sw = new Stopwatch();
@@ -66,7 +66,7 @@ namespace HackathonWork
 					result = process.StandardOutput.ReadLine();
 				});
 			worker.Start();
-			while ((sw.ElapsedMilliseconds < Settings.Timeout || Settings.Timeout == -1) && string.IsNullOrEmpty(result))
+			while ((!timeOut.HasValue || (sw.ElapsedMilliseconds < timeOut.Value)) && string.IsNullOrEmpty(result))
 			{
 
 			}
@@ -146,7 +146,7 @@ namespace HackathonWork
 									WriteLine(_processes[i], turnLines[j]);
 								}
 								// and wait for the player to respond
-								playerResponse[i] = ReadLine(_processes[i]);
+								playerResponse[i] = ReadLine(_processes[i], turnCounter == 0?Settings.FirstTimeout:Settings.Timeout);
 							
 						}
 						// process the player responses 

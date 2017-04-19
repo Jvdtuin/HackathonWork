@@ -16,5 +16,9 @@ namespace RankRunner
         {
             return Name;
         }
+
+        public int Points { get; set; }
+
+        public int Matches { get; set; }
     }
 }

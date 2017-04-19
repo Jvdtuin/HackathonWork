@@ -2,14 +2,9 @@
 using HackathonWork;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RankRunner
@@ -20,9 +15,7 @@ namespace RankRunner
         {
             InitializeComponent();
             _teams = new List<Team>();
-
         }
-
 
         private ListBox Compettitors;
         private ListBox Matches;
@@ -35,9 +28,8 @@ namespace RankRunner
         private Button button2;
         private Button button3;
 
-
         private List<Team> _teams;
-        private Random _random = new Random(0);
+        private Random _random = new Random();
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -45,7 +37,6 @@ namespace RankRunner
             {
                 ApplicationTb.Text = openFileDialog1.FileName;
             }
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -55,10 +46,11 @@ namespace RankRunner
                 if (File.Exists(ApplicationTb.Text))
                 {
                     AddTeam(TeamNameTb.Text, ApplicationTb.Text);
+                    TeamNameTb.Text = "";
+                    ApplicationTb.Text = "";
                 }
             }
         }
-
 
         private void AddTeam(string name, string application)
         {
@@ -67,7 +59,6 @@ namespace RankRunner
             Compettitors.Items.Add(newTeam);
         }
 
-
         /// <summary>
         /// Run battels
         /// </summary>
@@ -75,6 +66,15 @@ namespace RankRunner
         /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
+            int leagelevel = 0;
+            if (cbRules.SelectedIndex>=0)
+            {
+                leagelevel = cbRules.SelectedIndex;
+                if (leagelevel == 2) { leagelevel = 3; }
+            }
+
+            Settings.SetLeageLevel(leagelevel);
+
             // create battle schedule    
             List<Battle> battles = CreateBattles();
 
@@ -90,10 +90,9 @@ namespace RankRunner
             {
                 Matches.Items.Add(b);
             }
+
+            DetermanRanking(battles);
         }
-
-
-
 
         private void Runbattle(Battle battle)
         {
@@ -174,10 +173,6 @@ namespace RankRunner
                     }
                 }
             }
-           // foreach (Battle battle in battles)
-           // {
-           //     Matches.Items.Add(battle);
-           // }
             return battles;
         }
 
@@ -201,6 +196,66 @@ namespace RankRunner
         private void Matches_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void DetermanRanking(List<Battle> battles)
+        {
+            foreach(Team team in _teams)
+            {
+                int points = 0;
+                int matches = 0;
+                foreach (Battle battle in battles.Where(b=>b.Team1 == team))
+                {
+                    matches++;
+                    if (battle.Score2 == battle.Score1)
+                    {                       
+                        points += 1;
+                    }
+                    else if (battle.Score2 == 0)
+                    {
+                        points += 3;
+                    }
+                    else if (battle.Score2 < battle.Score1)
+                    {
+                        points += 2;
+                    }
+                    // in alle andere gevallen geen punten
+                }
+                foreach (Battle battle in battles.Where(b => b.Team2 == team))
+                {
+                    matches++;
+                    if (battle.Score2 == battle.Score1)
+                    {
+                        points += 1;
+                    }
+                    else if (battle.Score1 == 0)
+                    {
+                        points += 3;
+                    }
+                    else if (battle.Score1 < battle.Score2)
+                    {
+                        points += 2;
+                    }
+                    // in alle andere gevallen geen punten
+                }
+                team.Matches = matches;
+                team.Points = points;
+            }
+            lbRanking.Items.Clear();
+
+            _teams.Sort((t1, t2) =>
+            {
+                if (t1.Points < t2.Points) { return 1; }
+                if (t1.Points > t2.Points) { return -1; }
+                return 0;
+            });
+
+            int i = 1;
+            foreach (Team team in _teams)
+            {
+                lbRanking.Items.Add($"{i++} {team.Name} ({team.Points}/{team.Matches})");
+
+            }
         }
     }
 }

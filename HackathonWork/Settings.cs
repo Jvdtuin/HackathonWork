@@ -5,7 +5,8 @@ namespace HackathonWork
 {
 	public class Settings
 	{
-		public static int Timeout { get; set; } = -1;
+		public static int Timeout { get; set; } = 100;
+        public static int FirstTimeout { get; set; } = 1000;
 
 		internal static int LeagueLevel = 3;
 		internal const int MinFactoryCount = 7;
@@ -28,30 +29,6 @@ namespace HackathonWork
 
         public static int MaxRounds { get; set; } = 200;
 
-        internal static T GetProperty<T>(string key)
-		{
-			if (Properties.ContainsKey(key))
-			{
-				return (T)Properties[key];
-			}
-			return default(T);
-		}
-
-		internal static void SetProperty<T>(string key, T value)
-		{
-			lock (Properties)
-			{
-				if (Properties.ContainsKey(key))
-				{
-					Properties[key] = value;
-				}
-				else
-				{
-					Properties.Add(key, value);
-				}
-			}
-		}
-
 		internal static Dictionary<string, object> Properties = new Dictionary<string, object>();
 
 		internal const int DamageDuration = 5;
@@ -61,41 +38,6 @@ namespace HackathonWork
 		internal static int FactoryRadius;
 
 		public static int? CustomInitialUnitCount { get; internal set; }
-
-		//private static int? _seed = null;
-		//public static int Seed
-		//{
-		//	get
-		//	{
-		//		if (_seed.HasValue)
-		//		{
-		//			return _seed.Value;
-		//		}
-		//		return (int)(DateTime.Now.Ticks % (int.MaxValue - 1));
-		//	}
-		//	set
-		//	{
-		//		_seed = value;
-		//	}
-		//}
-
-
-
-		//private static Random _random = null;
-		//public static Random Random
-		//{
-		//	get
-		//	{
-		//		if (_random == null)
-		//		{
-		//			_random = new Random(Seed);
-		//		}
-		//		return _random;
-		//	}
-
-		//}
-
-
 
 		public const char ActionSplittingChar = ';';
        
