@@ -42,13 +42,15 @@
             this.label4 = new System.Windows.Forms.Label();
             this.SeedTb = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(514, 133);
+            this.button1.Location = new System.Drawing.Point(682, 108);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 0;
             this.button1.Text = "Play Game !!";
             this.button1.UseVisualStyleBackColor = true;
@@ -57,25 +59,27 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 56);
+            this.label1.Location = new System.Drawing.Point(9, 13);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.Size = new System.Drawing.Size(105, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Player program";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 72);
+            this.textBox1.Location = new System.Drawing.Point(13, 33);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(324, 20);
+            this.textBox1.Size = new System.Drawing.Size(431, 22);
             this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "Player.exe";
             // 
             // browse
             // 
-            this.browse.Location = new System.Drawing.Point(342, 70);
+            this.browse.Location = new System.Drawing.Point(453, 30);
+            this.browse.Margin = new System.Windows.Forms.Padding(4);
             this.browse.Name = "browse";
-            this.browse.Size = new System.Drawing.Size(26, 23);
+            this.browse.Size = new System.Drawing.Size(35, 28);
             this.browse.TabIndex = 3;
             this.browse.Text = "...";
             this.browse.UseVisualStyleBackColor = true;
@@ -84,9 +88,10 @@
             // chbxDebug
             // 
             this.chbxDebug.AutoSize = true;
-            this.chbxDebug.Location = new System.Drawing.Point(12, 98);
+            this.chbxDebug.Location = new System.Drawing.Point(13, 65);
+            this.chbxDebug.Margin = new System.Windows.Forms.Padding(4);
             this.chbxDebug.Name = "chbxDebug";
-            this.chbxDebug.Size = new System.Drawing.Size(100, 17);
+            this.chbxDebug.Size = new System.Drawing.Size(126, 21);
             this.chbxDebug.TabIndex = 4;
             this.chbxDebug.Text = "I want to debug";
             this.chbxDebug.UseVisualStyleBackColor = true;
@@ -94,9 +99,10 @@
             // rbtnRed
             // 
             this.rbtnRed.AutoSize = true;
-            this.rbtnRed.Location = new System.Drawing.Point(266, 97);
+            this.rbtnRed.Location = new System.Drawing.Point(352, 63);
+            this.rbtnRed.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnRed.Name = "rbtnRed";
-            this.rbtnRed.Size = new System.Drawing.Size(70, 17);
+            this.rbtnRed.Size = new System.Drawing.Size(90, 21);
             this.rbtnRed.TabIndex = 8;
             this.rbtnRed.Text = "Team red";
             this.rbtnRed.UseVisualStyleBackColor = true;
@@ -105,9 +111,10 @@
             // 
             this.rbtnBlue.AutoSize = true;
             this.rbtnBlue.Checked = true;
-            this.rbtnBlue.Location = new System.Drawing.Point(174, 98);
+            this.rbtnBlue.Location = new System.Drawing.Point(229, 65);
+            this.rbtnBlue.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnBlue.Name = "rbtnBlue";
-            this.rbtnBlue.Size = new System.Drawing.Size(75, 17);
+            this.rbtnBlue.Size = new System.Drawing.Size(96, 21);
             this.rbtnBlue.TabIndex = 9;
             this.rbtnBlue.TabStop = true;
             this.rbtnBlue.Text = "Team blue";
@@ -124,17 +131,19 @@
             "Level 1",
             "Level 2",
             "Level 3"});
-            this.cbLevel.Location = new System.Drawing.Point(468, 70);
+            this.cbLevel.Location = new System.Drawing.Point(621, 30);
+            this.cbLevel.Margin = new System.Windows.Forms.Padding(4);
             this.cbLevel.Name = "cbLevel";
-            this.cbLevel.Size = new System.Drawing.Size(121, 21);
+            this.cbLevel.Size = new System.Drawing.Size(160, 24);
             this.cbLevel.TabIndex = 10;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(389, 75);
+            this.label3.Location = new System.Drawing.Point(516, 36);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 13);
+            this.label3.Size = new System.Drawing.Size(96, 17);
             this.label3.TabIndex = 11;
             this.label3.Text = "Oponent level";
             // 
@@ -145,41 +154,54 @@
             "Round 1",
             "Round 2",
             "Round 3"});
-            this.Leage.Location = new System.Drawing.Point(468, 106);
+            this.Leage.Location = new System.Drawing.Point(621, 74);
+            this.Leage.Margin = new System.Windows.Forms.Padding(4);
             this.Leage.Name = "Leage";
-            this.Leage.Size = new System.Drawing.Size(121, 21);
+            this.Leage.Size = new System.Drawing.Size(160, 24);
             this.Leage.TabIndex = 12;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(389, 109);
+            this.label4.Location = new System.Drawing.Point(516, 78);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 13);
+            this.label4.Size = new System.Drawing.Size(44, 17);
             this.label4.TabIndex = 13;
             this.label4.Text = "Rules";
             // 
             // SeedTb
             // 
-            this.SeedTb.Location = new System.Drawing.Point(47, 136);
+            this.SeedTb.Location = new System.Drawing.Point(60, 111);
+            this.SeedTb.Margin = new System.Windows.Forms.Padding(4);
             this.SeedTb.Name = "SeedTb";
-            this.SeedTb.Size = new System.Drawing.Size(100, 20);
+            this.SeedTb.Size = new System.Drawing.Size(132, 22);
             this.SeedTb.TabIndex = 14;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 138);
+            this.label2.Location = new System.Drawing.Point(9, 114);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 13);
+            this.label2.Size = new System.Drawing.Size(41, 17);
             this.label2.TabIndex = 15;
             this.label2.Text = "Seed";
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(12, 140);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(769, 386);
+            this.richTextBox1.TabIndex = 16;
+            this.richTextBox1.Text = "";
+            // 
             // Setup
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(602, 170);
+            this.ClientSize = new System.Drawing.Size(797, 538);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.SeedTb);
             this.Controls.Add(this.label4);
@@ -193,6 +215,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Setup";
             this.Text = "Galaxy Conquest Setup";
             this.Load += new System.EventHandler(this.Setup_Load);
@@ -217,6 +240,7 @@
 		private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox SeedTb;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

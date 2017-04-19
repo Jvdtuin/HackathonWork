@@ -5,7 +5,8 @@ namespace HackathonWork
 {
 	public class Settings
 	{
-		public static int Timeout { get; set; } = 100;
+        public static bool UseTimeOut { get; set; } = true;
+        public static int Timeout { get; set; } = 100;
         public static int FirstTimeout { get; set; } = 1000;
 
 		internal static int LeagueLevel = 3;
@@ -38,8 +39,8 @@ namespace HackathonWork
 		internal static int FactoryRadius;
 
 		public static int? CustomInitialUnitCount { get; internal set; }
-
-		public const char ActionSplittingChar = ';';
+       
+        public const char ActionSplittingChar = ';';
        
 
         public static void SetLeageLevel(int leageLevel)

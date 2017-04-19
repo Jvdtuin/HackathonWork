@@ -48,7 +48,7 @@ public class Player
 			int factory2 = int.Parse(inputs[1]);
 			int distance = int.Parse(inputs[2]);
 			links[i] = new Link(factory1, factory2, distance);
-			//         Console.Error.WriteLine(links[i]);
+			         Console.Error.WriteLine(links[i]);
 		}
 
 		// build the factorie's 
