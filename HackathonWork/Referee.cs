@@ -87,6 +87,12 @@ namespace HackathonWork
             _troops = new List<Troop>();
             _bombs = new List<Bomb>();
             _frames = new List<Frame>();
+            foreach(Player player in _players)
+            {
+                player.SetFactories( _factories);
+                player.SetTroops(_troops);
+
+            }
         }
 
         public List<Frame> GetFrames()

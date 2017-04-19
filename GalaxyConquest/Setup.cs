@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,20 @@ namespace GalaxyConquest
 		public Setup()
 		{
 			InitializeComponent();
+            cbLevel.Items.Clear();
+            int items = int.Parse(ConfigurationManager.AppSettings["Opponents"]);
+            for (int i=0; i<items; i++)
+            {
+                cbLevel.Items.Add($"Level {i}");
+            }
             cbLevel.SelectedIndex = 0;
+            Leage.Items.Clear();
+            items = int.Parse(ConfigurationManager.AppSettings["MaxLeague"]);
+            for (int i =0; i< items; i++)
+            {
+                Leage.Items.Add($"Round {i + 1}");
+            }
+
             Leage.SelectedIndex = 0;
 		}
 
@@ -42,14 +56,22 @@ namespace GalaxyConquest
         {
             _outputEvents = new ConcurrentQueue<ConsoleOutputEventArgs>();
             string filePath = textBox1.Text;
-
-            string opponentAI = "";
-            switch ( cbLevel.SelectedIndex)
+            
+            if (!File.Exists(filePath))
             {
-                case 0: opponentAI = ConfigurationManager.AppSettings["AI0"]; break;
-                case 1: opponentAI = ConfigurationManager.AppSettings["AI1"]; break;
-                case 2: opponentAI = ConfigurationManager.AppSettings["AI2"]; break;                         
+                MessageBox.Show("Player program not found");
+                return;
             }
+
+
+            string opponentAI = ConfigurationManager.AppSettings[$"AI{cbLevel.SelectedIndex}"]; 
+           
+            if (!File.Exists(opponentAI))
+            {
+                MessageBox.Show("Oponent program not found");
+                return;
+            }
+
 
             string[] playerNames = new string[2];
             string[] players = new string[2];
@@ -75,9 +97,7 @@ namespace GalaxyConquest
             HackathonWork.Settings.SetLeageLevel(index);
 
             Referee referee = new Referee(players);
-            HackathonWork.Settings.UseTimeOut = false;
-            HackathonWork.Settings.Timeout = 100;
-            int seed;
+             int seed;
             if (int.TryParse(SeedTb.Text, out seed))
             {
                 referee.Seed = seed;
@@ -87,7 +107,12 @@ namespace GalaxyConquest
             DebugBreak debugMethod = null;
             if (chbxDebug.Checked)
             {
+                HackathonWork.Settings.UseTimeOut = false;
                 debugMethod = this.Debug;
+            }
+            else
+            {
+                HackathonWork.Settings.UseTimeOut = true;
             }
             try
             {

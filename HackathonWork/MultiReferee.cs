@@ -7,8 +7,6 @@ namespace HackathonWork
 {
     public delegate void DebugBreak();
 
-
-
     public abstract class MultiReferee
     {
         private string[] _consoles;
@@ -99,8 +97,6 @@ namespace HackathonWork
 
         protected abstract void AddFinishFrame();
 
-
-
         public void PlayGame(DebugBreak debugBreak)
         {
             _playerCount = _consoles.Length;
@@ -153,7 +149,7 @@ namespace HackathonWork
                             }
                             // and wait for the player to respond
 
-                            int? timeout = Settings.UseTimeOut?( turnCounter == 0 ? Settings.FirstTimeout : Settings.Timeout):(int?)null;                 
+                            int? timeout = Settings.UseTimeOut ? (turnCounter == 0 ? Settings.FirstTimeout : Settings.Timeout) : (int?)null;
                             playerResponse[i] = ReadLine(_processes[i], timeout, i);
 
                         }
@@ -161,7 +157,11 @@ namespace HackathonWork
 
                         for (int i = 0; i < _playerCount; i++)
                         {
+
                             HandlePlayerOutput(frameCounter++, turnCounter, i, new string[] { playerResponse[i] });
+
+
+
                         }
                         UpdateGame(turnCounter);
                         turnCounter++;
